@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"education-service/proto/pb"
 	"fmt"
+	"github.com/lib/pq"
 )
 
 type SmsRepository struct {
@@ -282,8 +283,8 @@ func (r SmsRepository) SendSmsDirectly(req *pb.SendSmsDirectlyRequest, companyId
 
 	_, err = tx.Exec(`
 		INSERT INTO sms_used (id, company_id, texts, sms_count, created_by_id, created_by_name, sms_used_type, student_id)
-		VALUES (gen_random_uuid(), $1, $2::text[], $3, $4, $5, 'BY_SELF', $6)
-	`, companyId, textParts, smsCount, req.CreatorId, req.CreatorName, req.StudentId)
+		VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, 'BY_SELF', $6)
+	`, companyId, pq.Array(textParts), smsCount, req.CreatorId, req.CreatorName, req.StudentId)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert sms_used: %w", err)
 	}
