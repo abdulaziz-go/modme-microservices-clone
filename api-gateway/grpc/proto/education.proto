@@ -688,7 +688,7 @@ message GetSmsLogRequest {
   string studentId=2;
 }
 message GetSmsLogResponse {
- repeated SmsLogList datas=1;
+  repeated SmsLogList datas=1;
 }
 message SmsLogList{
   string creatorName =1;
@@ -703,6 +703,10 @@ message AddSmsRequest{
   int32 sum=4;
 }
 message GetSmsTransactionDetailResponse{
+  repeated GetSmsTransactionList datas=1;
+}
+message GetSmsTransactionList{
+  int32 transactionId=4;
   string comment=1;
   int32 smsCount=2;
   int32 sum=3;
@@ -711,9 +715,9 @@ message GetSmsTemplateRequest {
   string smsType =1;
 }
 message GetSmsTemplateResponse{
-repeated SmsTemplateList datas=1;
- int32 insufficientBalanceResendCount=2;
- string smsType=3;
+  repeated SmsTemplateList datas=1;
+  int32 insufficientBalanceResendCount=2;
+  string smsType=3;
 }
 message SmsTemplateList{
   string actionName=1;
@@ -722,7 +726,7 @@ message SmsTemplateList{
   string isActive=4;
 }
 message SetSmsTemplateRequest{
- string action=1; // delete , update
+  string action=1; // delete , update
   string actionName=2;
   string smsValue=3;
   int32 smsCount=4;

@@ -1287,11 +1287,20 @@ definitions:
     type: object
   pb.GetSmsTransactionDetailResponse:
     properties:
+      datas:
+        items:
+          $ref: '#/definitions/pb.GetSmsTransactionList'
+        type: array
+    type: object
+  pb.GetSmsTransactionList:
+    properties:
       comment:
         type: string
       smsCount:
         type: integer
       sum:
+        type: integer
+      transactionId:
         type: integer
     type: object
   pb.GetStatisticRequest:

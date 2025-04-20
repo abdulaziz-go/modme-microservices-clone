@@ -7603,6 +7603,17 @@ const docTemplate = `{
         "pb.GetSmsTransactionDetailResponse": {
             "type": "object",
             "properties": {
+                "datas": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.GetSmsTransactionList"
+                    }
+                }
+            }
+        },
+        "pb.GetSmsTransactionList": {
+            "type": "object",
+            "properties": {
                 "comment": {
                     "type": "string"
                 },
@@ -7610,6 +7621,9 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "sum": {
+                    "type": "integer"
+                },
+                "transactionId": {
                     "type": "integer"
                 }
             }

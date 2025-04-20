@@ -131,7 +131,7 @@ func (r SmsRepository) GetSmsTransactionDetail(page int32, size int32, companyId
 	offset := (page - 1) * size
 
 	rows, err := r.db.Query(`
-		SELECT comment, sms_count, sum
+		SELECT comment, sms_count, sum , id
 		FROM sms_payments
 		WHERE company_id = $1
 		ORDER BY created_at DESC
@@ -145,7 +145,7 @@ func (r SmsRepository) GetSmsTransactionDetail(page int32, size int32, companyId
 	var datas []*pb.GetSmsTransactionList
 	for rows.Next() {
 		var item pb.GetSmsTransactionList
-		if err := rows.Scan(&item.Comment, &item.SmsCount, &item.Sum); err != nil {
+		if err := rows.Scan(&item.Comment, &item.SmsCount, &item.Sum, &item.TransactionId); err != nil {
 			return nil, err
 		}
 		datas = append(datas, &item)

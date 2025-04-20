@@ -6772,6 +6772,7 @@ func (x *GetSmsTransactionDetailResponse) GetDatas() []*GetSmsTransactionList {
 
 type GetSmsTransactionList struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	TransactionId int32                  `protobuf:"varint,4,opt,name=transactionId,proto3" json:"transactionId,omitempty"`
 	Comment       string                 `protobuf:"bytes,1,opt,name=comment,proto3" json:"comment,omitempty"`
 	SmsCount      int32                  `protobuf:"varint,2,opt,name=smsCount,proto3" json:"smsCount,omitempty"`
 	Sum           int32                  `protobuf:"varint,3,opt,name=sum,proto3" json:"sum,omitempty"`
@@ -6807,6 +6808,13 @@ func (x *GetSmsTransactionList) ProtoReflect() protoreflect.Message {
 // Deprecated: Use GetSmsTransactionList.ProtoReflect.Descriptor instead.
 func (*GetSmsTransactionList) Descriptor() ([]byte, []int) {
 	return file_education_proto_rawDescGZIP(), []int{89}
+}
+
+func (x *GetSmsTransactionList) GetTransactionId() int32 {
+	if x != nil {
+		return x.TransactionId
+	}
+	return 0
 }
 
 func (x *GetSmsTransactionList) GetComment() string {
@@ -7785,8 +7793,9 @@ const file_education_proto_rawDesc = "" +
 	"\acomment\x18\x03 \x01(\tR\acomment\x12\x10\n" +
 	"\x03sum\x18\x04 \x01(\x05R\x03sum\"Y\n" +
 	"\x1fGetSmsTransactionDetailResponse\x126\n" +
-	"\x05datas\x18\x01 \x03(\v2 .education.GetSmsTransactionListR\x05datas\"_\n" +
-	"\x15GetSmsTransactionList\x12\x18\n" +
+	"\x05datas\x18\x01 \x03(\v2 .education.GetSmsTransactionListR\x05datas\"\x85\x01\n" +
+	"\x15GetSmsTransactionList\x12$\n" +
+	"\rtransactionId\x18\x04 \x01(\x05R\rtransactionId\x12\x18\n" +
 	"\acomment\x18\x01 \x01(\tR\acomment\x12\x1a\n" +
 	"\bsmsCount\x18\x02 \x01(\x05R\bsmsCount\x12\x10\n" +
 	"\x03sum\x18\x03 \x01(\x05R\x03sum\"1\n" +

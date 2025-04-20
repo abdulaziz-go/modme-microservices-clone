@@ -763,6 +763,7 @@ message GetSmsTransactionDetailResponse{
   repeated GetSmsTransactionList datas=1;
 }
 message GetSmsTransactionList{
+  int32 transactionId=4;
   string comment=1;
   int32 smsCount=2;
   int32 sum=3;
