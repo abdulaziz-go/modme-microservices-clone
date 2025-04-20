@@ -17,6 +17,7 @@ type EducationClient struct {
 	companyClient        pb.CompanyServiceClient
 	tariffClient         pb.TariffServiceClient
 	companyFinanceClient pb.CompanyFinanceServiceClient
+	smsServiceClient     pb.SmsServiceClient
 }
 
 func NewEducationClient(addr string) (*EducationClient, error) {
@@ -33,7 +34,8 @@ func NewEducationClient(addr string) (*EducationClient, error) {
 	companyClient := pb.NewCompanyServiceClient(conn)
 	tariffClient := pb.NewTariffServiceClient(conn)
 	companyFinanceClient := pb.NewCompanyFinanceServiceClient(conn)
-	return &EducationClient{roomClient: roomClient, courseClient: courseClient, groupClient: groupClient, attendanceClient: attendanceClient, studentClient: studentClient, companyClient: companyClient, tariffClient: tariffClient, companyFinanceClient: companyFinanceClient}, nil
+	smsServiceClient := pb.NewSmsServiceClient(conn)
+	return &EducationClient{roomClient: roomClient, courseClient: courseClient, groupClient: groupClient, attendanceClient: attendanceClient, studentClient: studentClient, companyClient: companyClient, tariffClient: tariffClient, companyFinanceClient: companyFinanceClient, smsServiceClient: smsServiceClient}, nil
 }
 
 // Education Service method client
@@ -278,4 +280,26 @@ func (lc *EducationClient) FinanceUpdate(req *pb.CompanyFinance) (*pb.CompanyFin
 
 func (lc *EducationClient) GetStatisticCompany(req *pb.GetStatisticRequest) (*pb.GetStatisticResponse, error) {
 	return lc.companyClient.GetStatistic(context.TODO(), req)
+}
+
+func (lc *EducationClient) GetSmsLogs(ctx context.Context, req *pb.GetSmsLogRequest) (*pb.GetSmsLogResponse, error) {
+	return nil, nil
+}
+func (lc *EducationClient) AddSms(ctx context.Context, req *pb.AddSmsRequest) (*pb.AbsResponse, error) {
+	return nil, nil
+}
+func (lc *EducationClient) DeleteSms(ctx context.Context, req *pb.DeleteAbsRequest) (*pb.AbsResponse, error) {
+	return nil, nil
+}
+func (lc *EducationClient) GetSmsTransactionDetail(ctx context.Context, req *pb.PageRequest) (*pb.GetSmsTransactionDetailResponse, error) {
+	return nil, nil
+}
+func (lc *EducationClient) GetSmsTemplate(ctx context.Context, req *pb.GetSmsTemplateRequest) (*pb.GetSmsTemplateResponse, error) {
+	return nil, nil
+}
+func (lc *EducationClient) SetSmsTemplate(ctx context.Context, req *pb.SetSmsTemplateRequest) (*pb.AbsResponse, error) {
+	return nil, nil
+}
+func (lc *EducationClient) SendSmsDirectly(ctx context.Context, req *pb.SendSmsDirectlyRequest) (*pb.AbsResponse, error) {
+	return nil, nil
 }

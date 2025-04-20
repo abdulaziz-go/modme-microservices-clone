@@ -41,7 +41,7 @@ func EducationRoutes(api *gin.RouterGroup, userClient *client.UserClient) {
 			finance.PUT("/update", handlers.FinanceUpdateByCompany)
 		}
 		companySms := company.Group("/sms")
-		companySms.GET("/get-logs", etc.AuthMiddleware([]string{"ADMIN", "CEO", "FINANCIST", "SUPER_CEO"}, userClient), handlers.GetSmsLogs)
+		companySms.POST("/get-logs", etc.AuthMiddleware([]string{"ADMIN", "CEO", "FINANCIST", "SUPER_CEO"}, userClient), handlers.GetSmsLogs)
 		companySms.POST("/add-sms-count", etc.AuthMiddleware([]string{"SUPER_CEO"}, userClient), handlers.AddSmsCount)
 		companySms.DELETE("/delete-sms-count", etc.AuthMiddleware([]string{"SUPER_CEO"}, userClient), handlers.DeleteSmsCount)
 		companySms.GET("/get-sms-count-all", etc.AuthMiddleware([]string{"ADMIN, CEO", "SUPER_CEO"}, userClient), handlers.GetSmsTransactionDetail)

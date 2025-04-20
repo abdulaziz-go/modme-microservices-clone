@@ -6042,6 +6042,578 @@ func (x *CreateNoteRequest) GetStudentId() string {
 	return ""
 }
 
+type GetSmsLogRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PageRequest   *PageRequest           `protobuf:"bytes,1,opt,name=pageRequest,proto3" json:"pageRequest"`
+	StudentId     string                 `protobuf:"bytes,2,opt,name=studentId,proto3" json:"studentId"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSmsLogRequest) Reset() {
+	*x = GetSmsLogRequest{}
+	mi := &file_education_proto_msgTypes[77]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSmsLogRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSmsLogRequest) ProtoMessage() {}
+
+func (x *GetSmsLogRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_education_proto_msgTypes[77]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSmsLogRequest.ProtoReflect.Descriptor instead.
+func (*GetSmsLogRequest) Descriptor() ([]byte, []int) {
+	return file_education_proto_rawDescGZIP(), []int{77}
+}
+
+func (x *GetSmsLogRequest) GetPageRequest() *PageRequest {
+	if x != nil {
+		return x.PageRequest
+	}
+	return nil
+}
+
+func (x *GetSmsLogRequest) GetStudentId() string {
+	if x != nil {
+		return x.StudentId
+	}
+	return ""
+}
+
+type GetSmsLogResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CreatorName   string                 `protobuf:"bytes,1,opt,name=creatorName,proto3" json:"creatorName"`
+	SmsValue      string                 `protobuf:"bytes,2,opt,name=smsValue,proto3" json:"smsValue"`
+	SmsCount      int32                  `protobuf:"varint,3,opt,name=smsCount,proto3" json:"smsCount"`
+	SendDate      string                 `protobuf:"bytes,4,opt,name=sendDate,proto3" json:"sendDate"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSmsLogResponse) Reset() {
+	*x = GetSmsLogResponse{}
+	mi := &file_education_proto_msgTypes[78]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSmsLogResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSmsLogResponse) ProtoMessage() {}
+
+func (x *GetSmsLogResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_education_proto_msgTypes[78]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSmsLogResponse.ProtoReflect.Descriptor instead.
+func (*GetSmsLogResponse) Descriptor() ([]byte, []int) {
+	return file_education_proto_rawDescGZIP(), []int{78}
+}
+
+func (x *GetSmsLogResponse) GetCreatorName() string {
+	if x != nil {
+		return x.CreatorName
+	}
+	return ""
+}
+
+func (x *GetSmsLogResponse) GetSmsValue() string {
+	if x != nil {
+		return x.SmsValue
+	}
+	return ""
+}
+
+func (x *GetSmsLogResponse) GetSmsCount() int32 {
+	if x != nil {
+		return x.SmsCount
+	}
+	return 0
+}
+
+func (x *GetSmsLogResponse) GetSendDate() string {
+	if x != nil {
+		return x.SendDate
+	}
+	return ""
+}
+
+type AddSmsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CompanyId     string                 `protobuf:"bytes,1,opt,name=companyId,proto3" json:"companyId"`
+	SmsCount      int32                  `protobuf:"varint,2,opt,name=smsCount,proto3" json:"smsCount"`
+	Comment       string                 `protobuf:"bytes,3,opt,name=comment,proto3" json:"comment"`
+	Sum           int32                  `protobuf:"varint,4,opt,name=sum,proto3" json:"sum"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AddSmsRequest) Reset() {
+	*x = AddSmsRequest{}
+	mi := &file_education_proto_msgTypes[79]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AddSmsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddSmsRequest) ProtoMessage() {}
+
+func (x *AddSmsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_education_proto_msgTypes[79]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddSmsRequest.ProtoReflect.Descriptor instead.
+func (*AddSmsRequest) Descriptor() ([]byte, []int) {
+	return file_education_proto_rawDescGZIP(), []int{79}
+}
+
+func (x *AddSmsRequest) GetCompanyId() string {
+	if x != nil {
+		return x.CompanyId
+	}
+	return ""
+}
+
+func (x *AddSmsRequest) GetSmsCount() int32 {
+	if x != nil {
+		return x.SmsCount
+	}
+	return 0
+}
+
+func (x *AddSmsRequest) GetComment() string {
+	if x != nil {
+		return x.Comment
+	}
+	return ""
+}
+
+func (x *AddSmsRequest) GetSum() int32 {
+	if x != nil {
+		return x.Sum
+	}
+	return 0
+}
+
+type GetSmsTransactionDetailResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Comment       string                 `protobuf:"bytes,1,opt,name=comment,proto3" json:"comment"`
+	SmsCount      int32                  `protobuf:"varint,2,opt,name=smsCount,proto3" json:"smsCount"`
+	Sum           int32                  `protobuf:"varint,3,opt,name=sum,proto3" json:"sum"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSmsTransactionDetailResponse) Reset() {
+	*x = GetSmsTransactionDetailResponse{}
+	mi := &file_education_proto_msgTypes[80]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSmsTransactionDetailResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSmsTransactionDetailResponse) ProtoMessage() {}
+
+func (x *GetSmsTransactionDetailResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_education_proto_msgTypes[80]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSmsTransactionDetailResponse.ProtoReflect.Descriptor instead.
+func (*GetSmsTransactionDetailResponse) Descriptor() ([]byte, []int) {
+	return file_education_proto_rawDescGZIP(), []int{80}
+}
+
+func (x *GetSmsTransactionDetailResponse) GetComment() string {
+	if x != nil {
+		return x.Comment
+	}
+	return ""
+}
+
+func (x *GetSmsTransactionDetailResponse) GetSmsCount() int32 {
+	if x != nil {
+		return x.SmsCount
+	}
+	return 0
+}
+
+func (x *GetSmsTransactionDetailResponse) GetSum() int32 {
+	if x != nil {
+		return x.Sum
+	}
+	return 0
+}
+
+type GetSmsTemplateRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SmsType       string                 `protobuf:"bytes,1,opt,name=smsType,proto3" json:"smsType"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSmsTemplateRequest) Reset() {
+	*x = GetSmsTemplateRequest{}
+	mi := &file_education_proto_msgTypes[81]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSmsTemplateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSmsTemplateRequest) ProtoMessage() {}
+
+func (x *GetSmsTemplateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_education_proto_msgTypes[81]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSmsTemplateRequest.ProtoReflect.Descriptor instead.
+func (*GetSmsTemplateRequest) Descriptor() ([]byte, []int) {
+	return file_education_proto_rawDescGZIP(), []int{81}
+}
+
+func (x *GetSmsTemplateRequest) GetSmsType() string {
+	if x != nil {
+		return x.SmsType
+	}
+	return ""
+}
+
+type GetSmsTemplateResponse struct {
+	state                          protoimpl.MessageState `protogen:"open.v1"`
+	Datas                          []*SmsTemplateList     `protobuf:"bytes,1,rep,name=datas,proto3" json:"datas"`
+	InsufficientBalanceResendCount int32                  `protobuf:"varint,2,opt,name=insufficientBalanceResendCount,proto3" json:"insufficientBalanceResendCount"`
+	SmsType                        string                 `protobuf:"bytes,3,opt,name=smsType,proto3" json:"smsType"`
+	unknownFields                  protoimpl.UnknownFields
+	sizeCache                      protoimpl.SizeCache
+}
+
+func (x *GetSmsTemplateResponse) Reset() {
+	*x = GetSmsTemplateResponse{}
+	mi := &file_education_proto_msgTypes[82]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSmsTemplateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSmsTemplateResponse) ProtoMessage() {}
+
+func (x *GetSmsTemplateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_education_proto_msgTypes[82]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSmsTemplateResponse.ProtoReflect.Descriptor instead.
+func (*GetSmsTemplateResponse) Descriptor() ([]byte, []int) {
+	return file_education_proto_rawDescGZIP(), []int{82}
+}
+
+func (x *GetSmsTemplateResponse) GetDatas() []*SmsTemplateList {
+	if x != nil {
+		return x.Datas
+	}
+	return nil
+}
+
+func (x *GetSmsTemplateResponse) GetInsufficientBalanceResendCount() int32 {
+	if x != nil {
+		return x.InsufficientBalanceResendCount
+	}
+	return 0
+}
+
+func (x *GetSmsTemplateResponse) GetSmsType() string {
+	if x != nil {
+		return x.SmsType
+	}
+	return ""
+}
+
+type SmsTemplateList struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ActionName    string                 `protobuf:"bytes,1,opt,name=actionName,proto3" json:"actionName"`
+	SmsValue      string                 `protobuf:"bytes,2,opt,name=smsValue,proto3" json:"smsValue"`
+	SmsCount      int32                  `protobuf:"varint,3,opt,name=smsCount,proto3" json:"smsCount"`
+	IsActive      string                 `protobuf:"bytes,4,opt,name=isActive,proto3" json:"isActive"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SmsTemplateList) Reset() {
+	*x = SmsTemplateList{}
+	mi := &file_education_proto_msgTypes[83]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SmsTemplateList) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SmsTemplateList) ProtoMessage() {}
+
+func (x *SmsTemplateList) ProtoReflect() protoreflect.Message {
+	mi := &file_education_proto_msgTypes[83]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SmsTemplateList.ProtoReflect.Descriptor instead.
+func (*SmsTemplateList) Descriptor() ([]byte, []int) {
+	return file_education_proto_rawDescGZIP(), []int{83}
+}
+
+func (x *SmsTemplateList) GetActionName() string {
+	if x != nil {
+		return x.ActionName
+	}
+	return ""
+}
+
+func (x *SmsTemplateList) GetSmsValue() string {
+	if x != nil {
+		return x.SmsValue
+	}
+	return ""
+}
+
+func (x *SmsTemplateList) GetSmsCount() int32 {
+	if x != nil {
+		return x.SmsCount
+	}
+	return 0
+}
+
+func (x *SmsTemplateList) GetIsActive() string {
+	if x != nil {
+		return x.IsActive
+	}
+	return ""
+}
+
+type SetSmsTemplateRequest struct {
+	state                          protoimpl.MessageState `protogen:"open.v1"`
+	Action                         string                 `protobuf:"bytes,1,opt,name=action,proto3" json:"action"` // delete , update
+	ActionName                     string                 `protobuf:"bytes,2,opt,name=actionName,proto3" json:"actionName"`
+	SmsValue                       string                 `protobuf:"bytes,3,opt,name=smsValue,proto3" json:"smsValue"`
+	SmsCount                       int32                  `protobuf:"varint,4,opt,name=smsCount,proto3" json:"smsCount"`
+	IsActive                       string                 `protobuf:"bytes,5,opt,name=isActive,proto3" json:"isActive"`
+	InsufficientBalanceResendCount int32                  `protobuf:"varint,6,opt,name=insufficientBalanceResendCount,proto3" json:"insufficientBalanceResendCount"`
+	unknownFields                  protoimpl.UnknownFields
+	sizeCache                      protoimpl.SizeCache
+}
+
+func (x *SetSmsTemplateRequest) Reset() {
+	*x = SetSmsTemplateRequest{}
+	mi := &file_education_proto_msgTypes[84]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetSmsTemplateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetSmsTemplateRequest) ProtoMessage() {}
+
+func (x *SetSmsTemplateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_education_proto_msgTypes[84]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetSmsTemplateRequest.ProtoReflect.Descriptor instead.
+func (*SetSmsTemplateRequest) Descriptor() ([]byte, []int) {
+	return file_education_proto_rawDescGZIP(), []int{84}
+}
+
+func (x *SetSmsTemplateRequest) GetAction() string {
+	if x != nil {
+		return x.Action
+	}
+	return ""
+}
+
+func (x *SetSmsTemplateRequest) GetActionName() string {
+	if x != nil {
+		return x.ActionName
+	}
+	return ""
+}
+
+func (x *SetSmsTemplateRequest) GetSmsValue() string {
+	if x != nil {
+		return x.SmsValue
+	}
+	return ""
+}
+
+func (x *SetSmsTemplateRequest) GetSmsCount() int32 {
+	if x != nil {
+		return x.SmsCount
+	}
+	return 0
+}
+
+func (x *SetSmsTemplateRequest) GetIsActive() string {
+	if x != nil {
+		return x.IsActive
+	}
+	return ""
+}
+
+func (x *SetSmsTemplateRequest) GetInsufficientBalanceResendCount() int32 {
+	if x != nil {
+		return x.InsufficientBalanceResendCount
+	}
+	return 0
+}
+
+type SendSmsDirectlyRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SmsValue      string                 `protobuf:"bytes,1,opt,name=smsValue,proto3" json:"smsValue"`
+	SmsCount      int32                  `protobuf:"varint,2,opt,name=smsCount,proto3" json:"smsCount"`
+	CreatorName   string                 `protobuf:"bytes,3,opt,name=creatorName,proto3" json:"creatorName"`
+	CreatorId     string                 `protobuf:"bytes,4,opt,name=creatorId,proto3" json:"creatorId"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SendSmsDirectlyRequest) Reset() {
+	*x = SendSmsDirectlyRequest{}
+	mi := &file_education_proto_msgTypes[85]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SendSmsDirectlyRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SendSmsDirectlyRequest) ProtoMessage() {}
+
+func (x *SendSmsDirectlyRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_education_proto_msgTypes[85]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SendSmsDirectlyRequest.ProtoReflect.Descriptor instead.
+func (*SendSmsDirectlyRequest) Descriptor() ([]byte, []int) {
+	return file_education_proto_rawDescGZIP(), []int{85}
+}
+
+func (x *SendSmsDirectlyRequest) GetSmsValue() string {
+	if x != nil {
+		return x.SmsValue
+	}
+	return ""
+}
+
+func (x *SendSmsDirectlyRequest) GetSmsCount() int32 {
+	if x != nil {
+		return x.SmsCount
+	}
+	return 0
+}
+
+func (x *SendSmsDirectlyRequest) GetCreatorName() string {
+	if x != nil {
+		return x.CreatorName
+	}
+	return ""
+}
+
+func (x *SendSmsDirectlyRequest) GetCreatorId() string {
+	if x != nil {
+		return x.CreatorId
+	}
+	return ""
+}
+
 var File_education_proto protoreflect.FileDescriptor
 
 const file_education_proto_rawDesc = "" +
@@ -6623,7 +7195,51 @@ const file_education_proto_rawDesc = "" +
 	"\tcreatedAt\x18\x03 \x01(\tR\tcreatedAt\"E\n" +
 	"\x11CreateNoteRequest\x12\x12\n" +
 	"\x04note\x18\x01 \x01(\tR\x04note\x12\x1c\n" +
-	"\tstudentId\x18\x02 \x01(\tR\tstudentId2\xff\x02\n" +
+	"\tstudentId\x18\x02 \x01(\tR\tstudentId\"g\n" +
+	"\x10GetSmsLogRequest\x125\n" +
+	"\vpageRequest\x18\x01 \x01(\v2\x13.common.PageRequestR\vpageRequest\x12\x1c\n" +
+	"\tstudentId\x18\x02 \x01(\tR\tstudentId\"\x89\x01\n" +
+	"\x11GetSmsLogResponse\x12 \n" +
+	"\vcreatorName\x18\x01 \x01(\tR\vcreatorName\x12\x1a\n" +
+	"\bsmsValue\x18\x02 \x01(\tR\bsmsValue\x12\x1a\n" +
+	"\bsmsCount\x18\x03 \x01(\x05R\bsmsCount\x12\x1a\n" +
+	"\bsendDate\x18\x04 \x01(\tR\bsendDate\"u\n" +
+	"\rAddSmsRequest\x12\x1c\n" +
+	"\tcompanyId\x18\x01 \x01(\tR\tcompanyId\x12\x1a\n" +
+	"\bsmsCount\x18\x02 \x01(\x05R\bsmsCount\x12\x18\n" +
+	"\acomment\x18\x03 \x01(\tR\acomment\x12\x10\n" +
+	"\x03sum\x18\x04 \x01(\x05R\x03sum\"i\n" +
+	"\x1fGetSmsTransactionDetailResponse\x12\x18\n" +
+	"\acomment\x18\x01 \x01(\tR\acomment\x12\x1a\n" +
+	"\bsmsCount\x18\x02 \x01(\x05R\bsmsCount\x12\x10\n" +
+	"\x03sum\x18\x03 \x01(\x05R\x03sum\"1\n" +
+	"\x15GetSmsTemplateRequest\x12\x18\n" +
+	"\asmsType\x18\x01 \x01(\tR\asmsType\"\xac\x01\n" +
+	"\x16GetSmsTemplateResponse\x120\n" +
+	"\x05datas\x18\x01 \x03(\v2\x1a.education.SmsTemplateListR\x05datas\x12F\n" +
+	"\x1einsufficientBalanceResendCount\x18\x02 \x01(\x05R\x1einsufficientBalanceResendCount\x12\x18\n" +
+	"\asmsType\x18\x03 \x01(\tR\asmsType\"\x85\x01\n" +
+	"\x0fSmsTemplateList\x12\x1e\n" +
+	"\n" +
+	"actionName\x18\x01 \x01(\tR\n" +
+	"actionName\x12\x1a\n" +
+	"\bsmsValue\x18\x02 \x01(\tR\bsmsValue\x12\x1a\n" +
+	"\bsmsCount\x18\x03 \x01(\x05R\bsmsCount\x12\x1a\n" +
+	"\bisActive\x18\x04 \x01(\tR\bisActive\"\xeb\x01\n" +
+	"\x15SetSmsTemplateRequest\x12\x16\n" +
+	"\x06action\x18\x01 \x01(\tR\x06action\x12\x1e\n" +
+	"\n" +
+	"actionName\x18\x02 \x01(\tR\n" +
+	"actionName\x12\x1a\n" +
+	"\bsmsValue\x18\x03 \x01(\tR\bsmsValue\x12\x1a\n" +
+	"\bsmsCount\x18\x04 \x01(\x05R\bsmsCount\x12\x1a\n" +
+	"\bisActive\x18\x05 \x01(\tR\bisActive\x12F\n" +
+	"\x1einsufficientBalanceResendCount\x18\x06 \x01(\x05R\x1einsufficientBalanceResendCount\"\x90\x01\n" +
+	"\x16SendSmsDirectlyRequest\x12\x1a\n" +
+	"\bsmsValue\x18\x01 \x01(\tR\bsmsValue\x12\x1a\n" +
+	"\bsmsCount\x18\x02 \x01(\x05R\bsmsCount\x12 \n" +
+	"\vcreatorName\x18\x03 \x01(\tR\vcreatorName\x12\x1c\n" +
+	"\tcreatorId\x18\x04 \x01(\tR\tcreatorId2\xff\x02\n" +
 	"\x0eCompanyService\x12T\n" +
 	"\x15GetCompanyBySubdomain\x12\x1c.education.GetCompanyRequest\x1a\x1d.education.GetCompanyResponse\x12E\n" +
 	"\rCreateCompany\x12\x1f.education.CreateCompanyRequest\x1a\x13.common.AbsResponse\x128\n" +
@@ -6688,7 +7304,17 @@ const file_education_proto_rawDesc = "" +
 	"\x12TransferLessonDate\x12 .education.TransferLessonRequest\x1a\x13.common.AbsResponse\x12W\n" +
 	"\x16ChangeConditionStudent\x12(.education.ChangeConditionStudentRequest\x1a\x13.common.AbsResponse\x12g\n" +
 	"\x14GetStudentsByGroupId\x12&.education.GetStudentsByGroupIdRequest\x1a'.education.GetStudentsByGroupIdResponse\x12[\n" +
-	"\x18ChangeUserBalanceHistory\x12*.education.ChangeUserBalanceHistoryRequest\x1a\x13.common.AbsResponseB\x0fZ\rgrpc/proto/pbb\x06proto3"
+	"\x18ChangeUserBalanceHistory\x12*.education.ChangeUserBalanceHistoryRequest\x1a\x13.common.AbsResponse2\x91\x04\n" +
+	"\n" +
+	"SmsService\x12G\n" +
+	"\n" +
+	"GetSmsLogs\x12\x1b.education.GetSmsLogRequest\x1a\x1c.education.GetSmsLogResponse\x127\n" +
+	"\x06AddSms\x12\x18.education.AddSmsRequest\x1a\x13.common.AbsResponse\x12:\n" +
+	"\tDeleteSms\x12\x18.common.DeleteAbsRequest\x1a\x13.common.AbsResponse\x12Z\n" +
+	"\x17GetSmsTransactionDetail\x12\x13.common.PageRequest\x1a*.education.GetSmsTransactionDetailResponse\x12U\n" +
+	"\x0eGetSmsTemplate\x12 .education.GetSmsTemplateRequest\x1a!.education.GetSmsTemplateResponse\x12G\n" +
+	"\x0eSetSmsTemplate\x12 .education.SetSmsTemplateRequest\x1a\x13.common.AbsResponse\x12I\n" +
+	"\x0fSendSmsDirectly\x12!.education.SendSmsDirectlyRequest\x1a\x13.common.AbsResponseB\x0fZ\rgrpc/proto/pbb\x06proto3"
 
 var (
 	file_education_proto_rawDescOnce sync.Once
@@ -6702,7 +7328,7 @@ func file_education_proto_rawDescGZIP() []byte {
 	return file_education_proto_rawDescData
 }
 
-var file_education_proto_msgTypes = make([]protoimpl.MessageInfo, 78)
+var file_education_proto_msgTypes = make([]protoimpl.MessageInfo, 87)
 var file_education_proto_goTypes = []any{
 	(*GetStatisticResponse)(nil),                  // 0: education.GetStatisticResponse
 	(*OtherDetails)(nil),                          // 1: education.OtherDetails
@@ -6781,161 +7407,186 @@ var file_education_proto_goTypes = []any{
 	(*GetNotesByStudent)(nil),                     // 74: education.GetNotesByStudent
 	(*AbsNote)(nil),                               // 75: education.AbsNote
 	(*CreateNoteRequest)(nil),                     // 76: education.CreateNoteRequest
-	nil,                                           // 77: education.OtherDetails.DetailsEntry
-	(*PageRequest)(nil),                           // 78: common.PageRequest
-	(*emptypb.Empty)(nil),                         // 79: google.protobuf.Empty
-	(*DeleteAbsRequest)(nil),                      // 80: common.DeleteAbsRequest
-	(*AbsResponse)(nil),                           // 81: common.AbsResponse
+	(*GetSmsLogRequest)(nil),                      // 77: education.GetSmsLogRequest
+	(*GetSmsLogResponse)(nil),                     // 78: education.GetSmsLogResponse
+	(*AddSmsRequest)(nil),                         // 79: education.AddSmsRequest
+	(*GetSmsTransactionDetailResponse)(nil),       // 80: education.GetSmsTransactionDetailResponse
+	(*GetSmsTemplateRequest)(nil),                 // 81: education.GetSmsTemplateRequest
+	(*GetSmsTemplateResponse)(nil),                // 82: education.GetSmsTemplateResponse
+	(*SmsTemplateList)(nil),                       // 83: education.SmsTemplateList
+	(*SetSmsTemplateRequest)(nil),                 // 84: education.SetSmsTemplateRequest
+	(*SendSmsDirectlyRequest)(nil),                // 85: education.SendSmsDirectlyRequest
+	nil,                                           // 86: education.OtherDetails.DetailsEntry
+	(*PageRequest)(nil),                           // 87: common.PageRequest
+	(*emptypb.Empty)(nil),                         // 88: google.protobuf.Empty
+	(*DeleteAbsRequest)(nil),                      // 89: common.DeleteAbsRequest
+	(*AbsResponse)(nil),                           // 90: common.AbsResponse
 }
 var file_education_proto_depIdxs = []int32{
-	2,  // 0: education.GetStatisticResponse.details:type_name -> education.CompanyCommonDetails
-	1,  // 1: education.GetStatisticResponse.registerDetails:type_name -> education.OtherDetails
-	1,  // 2: education.GetStatisticResponse.paymentDetails:type_name -> education.OtherDetails
-	77, // 3: education.OtherDetails.details:type_name -> education.OtherDetails.DetailsEntry
-	8,  // 4: education.GetAllResponse.items:type_name -> education.GetCompanyResponse
-	9,  // 5: education.GetCompanyResponse.tariff:type_name -> education.Tariff
-	9,  // 6: education.TariffList.items:type_name -> education.Tariff
-	12, // 7: education.CompanyFinanceSelfList.items:type_name -> education.CompanyFinanceSelf
-	15, // 8: education.CompanyFinanceList.items:type_name -> education.CompanyFinanceForList
-	18, // 9: education.GetUpdateRoomAbs.rooms:type_name -> education.AbsRoom
-	21, // 10: education.GetUpdateCourseAbs.courses:type_name -> education.AbsCourse
-	26, // 11: education.GetLeftAfterTrialPeriodResponse.items:type_name -> education.AbsGetLeftAfter
-	30, // 12: education.GetGroupsByTeacherResponse.groups:type_name -> education.GetGroupByTeacherAbs
-	63, // 13: education.GetGroupByTeacherAbs.students:type_name -> education.AbsStudent
-	35, // 14: education.GetGroupsByCourseResponse.groups:type_name -> education.GetGroupByCourseAbsResponse
-	21, // 15: education.GetGroupAbsResponse.course:type_name -> education.AbsCourse
-	18, // 16: education.GetGroupAbsResponse.room:type_name -> education.AbsRoom
-	36, // 17: education.GetGroupsResponse.groups:type_name -> education.GetGroupAbsResponse
-	78, // 18: education.GetGroupsRequest.page:type_name -> common.PageRequest
-	41, // 19: education.CalculateTeacherSalaryResponse.salaries:type_name -> education.AbsCalculateSalary
-	42, // 20: education.AbsCalculateSalary.salaries:type_name -> education.StudentSalary
-	45, // 21: education.GetAttendanceResponse.days:type_name -> education.Day
-	46, // 22: education.GetAttendanceResponse.students:type_name -> education.Student
-	47, // 23: education.Student.attendance:type_name -> education.Attendance
-	48, // 24: education.Student.freezeDetail:type_name -> education.FreezeDetail
-	63, // 25: education.GetStudentsByGroupIdResponse.students:type_name -> education.AbsStudent
-	60, // 26: education.GetHistoryGroupResponse.groupHistory:type_name -> education.AbsHistory
-	58, // 27: education.GetHistoryGroupResponse.studentsHistory:type_name -> education.AbsStudentHistory
-	60, // 28: education.GetHistoryStudentResponse.studentHistory:type_name -> education.AbsHistory
-	58, // 29: education.GetHistoryStudentResponse.conditionsHistory:type_name -> education.AbsStudentHistory
-	63, // 30: education.AbsStudentHistory.student:type_name -> education.AbsStudent
-	59, // 31: education.AbsStudentHistory.group:type_name -> education.AbsGroup
-	21, // 32: education.AbsGroup.course:type_name -> education.AbsCourse
-	63, // 33: education.SearchStudentResponse.students:type_name -> education.AbsStudent
-	66, // 34: education.GetAllStudentResponse.response:type_name -> education.GetGroupsAbsForStudent
-	67, // 35: education.GetGroupsAbsForStudent.groups:type_name -> education.GroupGetAllStudentAbs
-	21, // 36: education.GroupGetAllStudentAbs.course:type_name -> education.AbsCourse
-	73, // 37: education.GetStudentByIdResponse.groups:type_name -> education.GetGroupStudent
-	18, // 38: education.GetGroupStudent.room:type_name -> education.AbsRoom
-	21, // 39: education.GetGroupStudent.course:type_name -> education.AbsCourse
-	75, // 40: education.GetNotesByStudent.notes:type_name -> education.AbsNote
-	7,  // 41: education.CompanyService.GetCompanyBySubdomain:input_type -> education.GetCompanyRequest
-	6,  // 42: education.CompanyService.CreateCompany:input_type -> education.CreateCompanyRequest
-	78, // 43: education.CompanyService.GetAll:input_type -> common.PageRequest
-	4,  // 44: education.CompanyService.UpdateCompany:input_type -> education.UpdateCompanyRequest
-	3,  // 45: education.CompanyService.GetStatistic:input_type -> education.GetStatisticRequest
-	9,  // 46: education.TariffService.Create:input_type -> education.Tariff
-	9,  // 47: education.TariffService.Update:input_type -> education.Tariff
-	9,  // 48: education.TariffService.Delete:input_type -> education.Tariff
-	79, // 49: education.TariffService.Get:input_type -> google.protobuf.Empty
-	11, // 50: education.CompanyFinanceService.Create:input_type -> education.CompanyFinance
-	80, // 51: education.CompanyFinanceService.Delete:input_type -> common.DeleteAbsRequest
-	78, // 52: education.CompanyFinanceService.GetAll:input_type -> common.PageRequest
-	78, // 53: education.CompanyFinanceService.GetByCompany:input_type -> common.PageRequest
-	11, // 54: education.CompanyFinanceService.UpdateByCompany:input_type -> education.CompanyFinance
-	16, // 55: education.RoomService.CreateRoom:input_type -> education.CreateRoomRequest
-	79, // 56: education.RoomService.GetRooms:input_type -> google.protobuf.Empty
-	18, // 57: education.RoomService.UpdateRoom:input_type -> education.AbsRoom
-	80, // 58: education.RoomService.DeleteRoom:input_type -> common.DeleteAbsRequest
-	19, // 59: education.CourseService.CreateCourse:input_type -> education.CreateCourseRequest
-	79, // 60: education.CourseService.GetCourses:input_type -> google.protobuf.Empty
-	23, // 61: education.CourseService.GetCourseById:input_type -> education.GetCourseByIdRequest
-	21, // 62: education.CourseService.UpdateCourse:input_type -> education.AbsCourse
-	80, // 63: education.CourseService.DeleteCourse:input_type -> common.DeleteAbsRequest
-	31, // 64: education.GroupService.CreateGroup:input_type -> education.CreateGroupRequest
-	38, // 65: education.GroupService.GetGroups:input_type -> education.GetGroupsRequest
-	32, // 66: education.GroupService.GetGroupById:input_type -> education.GetGroupByIdRequest
-	32, // 67: education.GroupService.GetGroupsByCourseId:input_type -> education.GetGroupByIdRequest
-	33, // 68: education.GroupService.UpdateGroup:input_type -> education.GetUpdateGroupAbs
-	80, // 69: education.GroupService.DeleteGroup:input_type -> common.DeleteAbsRequest
-	28, // 70: education.GroupService.GetGroupsByTeacherId:input_type -> education.GetGroupsByTeacherIdRequest
-	79, // 71: education.GroupService.GetCommonInformationEducation:input_type -> google.protobuf.Empty
-	24, // 72: education.GroupService.GetLeftAfterTrialPeriod:input_type -> education.GetLeftAfterTrialPeriodRequest
-	43, // 73: education.AttendanceService.GetAttendance:input_type -> education.GetAttendanceRequest
-	49, // 74: education.AttendanceService.SetAttendance:input_type -> education.SetAttendanceRequest
-	39, // 75: education.AttendanceService.CalculateTeacherSalaryByAttendance:input_type -> education.CalculateTeacherSalaryRequest
-	64, // 76: education.StudentService.GetAllStudent:input_type -> education.GetAllStudentRequest
-	68, // 77: education.StudentService.CreateStudent:input_type -> education.CreateStudentRequest
-	69, // 78: education.StudentService.UpdateStudent:input_type -> education.UpdateStudentRequest
-	51, // 79: education.StudentService.DeleteStudent:input_type -> education.DeleteStudentRequest
-	70, // 80: education.StudentService.AddToGroup:input_type -> education.AddToGroupRequest
-	72, // 81: education.StudentService.GetStudentById:input_type -> education.NoteStudentByAbsRequest
-	72, // 82: education.StudentService.GetNoteByStudent:input_type -> education.NoteStudentByAbsRequest
-	76, // 83: education.StudentService.CreateNoteForStudent:input_type -> education.CreateNoteRequest
-	72, // 84: education.StudentService.DeleteStudentNote:input_type -> education.NoteStudentByAbsRequest
-	61, // 85: education.StudentService.SearchStudent:input_type -> education.SearchStudentRequest
-	72, // 86: education.StudentService.GetHistoryGroupById:input_type -> education.NoteStudentByAbsRequest
-	72, // 87: education.StudentService.GetHistoryStudentById:input_type -> education.NoteStudentByAbsRequest
-	55, // 88: education.StudentService.TransferLessonDate:input_type -> education.TransferLessonRequest
-	54, // 89: education.StudentService.ChangeConditionStudent:input_type -> education.ChangeConditionStudentRequest
-	53, // 90: education.StudentService.GetStudentsByGroupId:input_type -> education.GetStudentsByGroupIdRequest
-	50, // 91: education.StudentService.ChangeUserBalanceHistory:input_type -> education.ChangeUserBalanceHistoryRequest
-	8,  // 92: education.CompanyService.GetCompanyBySubdomain:output_type -> education.GetCompanyResponse
-	81, // 93: education.CompanyService.CreateCompany:output_type -> common.AbsResponse
-	5,  // 94: education.CompanyService.GetAll:output_type -> education.GetAllResponse
-	81, // 95: education.CompanyService.UpdateCompany:output_type -> common.AbsResponse
-	0,  // 96: education.CompanyService.GetStatistic:output_type -> education.GetStatisticResponse
-	9,  // 97: education.TariffService.Create:output_type -> education.Tariff
-	9,  // 98: education.TariffService.Update:output_type -> education.Tariff
-	9,  // 99: education.TariffService.Delete:output_type -> education.Tariff
-	10, // 100: education.TariffService.Get:output_type -> education.TariffList
-	11, // 101: education.CompanyFinanceService.Create:output_type -> education.CompanyFinance
-	81, // 102: education.CompanyFinanceService.Delete:output_type -> common.AbsResponse
-	14, // 103: education.CompanyFinanceService.GetAll:output_type -> education.CompanyFinanceList
-	13, // 104: education.CompanyFinanceService.GetByCompany:output_type -> education.CompanyFinanceSelfList
-	11, // 105: education.CompanyFinanceService.UpdateByCompany:output_type -> education.CompanyFinance
-	81, // 106: education.RoomService.CreateRoom:output_type -> common.AbsResponse
-	17, // 107: education.RoomService.GetRooms:output_type -> education.GetUpdateRoomAbs
-	81, // 108: education.RoomService.UpdateRoom:output_type -> common.AbsResponse
-	81, // 109: education.RoomService.DeleteRoom:output_type -> common.AbsResponse
-	81, // 110: education.CourseService.CreateCourse:output_type -> common.AbsResponse
-	20, // 111: education.CourseService.GetCourses:output_type -> education.GetUpdateCourseAbs
-	22, // 112: education.CourseService.GetCourseById:output_type -> education.GetCourseByIdResponse
-	81, // 113: education.CourseService.UpdateCourse:output_type -> common.AbsResponse
-	81, // 114: education.CourseService.DeleteCourse:output_type -> common.AbsResponse
-	81, // 115: education.GroupService.CreateGroup:output_type -> common.AbsResponse
-	37, // 116: education.GroupService.GetGroups:output_type -> education.GetGroupsResponse
-	36, // 117: education.GroupService.GetGroupById:output_type -> education.GetGroupAbsResponse
-	34, // 118: education.GroupService.GetGroupsByCourseId:output_type -> education.GetGroupsByCourseResponse
-	81, // 119: education.GroupService.UpdateGroup:output_type -> common.AbsResponse
-	81, // 120: education.GroupService.DeleteGroup:output_type -> common.AbsResponse
-	29, // 121: education.GroupService.GetGroupsByTeacherId:output_type -> education.GetGroupsByTeacherResponse
-	27, // 122: education.GroupService.GetCommonInformationEducation:output_type -> education.GetCommonInformationEducationResponse
-	25, // 123: education.GroupService.GetLeftAfterTrialPeriod:output_type -> education.GetLeftAfterTrialPeriodResponse
-	44, // 124: education.AttendanceService.GetAttendance:output_type -> education.GetAttendanceResponse
-	81, // 125: education.AttendanceService.SetAttendance:output_type -> common.AbsResponse
-	40, // 126: education.AttendanceService.CalculateTeacherSalaryByAttendance:output_type -> education.CalculateTeacherSalaryResponse
-	65, // 127: education.StudentService.GetAllStudent:output_type -> education.GetAllStudentResponse
-	81, // 128: education.StudentService.CreateStudent:output_type -> common.AbsResponse
-	81, // 129: education.StudentService.UpdateStudent:output_type -> common.AbsResponse
-	81, // 130: education.StudentService.DeleteStudent:output_type -> common.AbsResponse
-	81, // 131: education.StudentService.AddToGroup:output_type -> common.AbsResponse
-	71, // 132: education.StudentService.GetStudentById:output_type -> education.GetStudentByIdResponse
-	74, // 133: education.StudentService.GetNoteByStudent:output_type -> education.GetNotesByStudent
-	81, // 134: education.StudentService.CreateNoteForStudent:output_type -> common.AbsResponse
-	81, // 135: education.StudentService.DeleteStudentNote:output_type -> common.AbsResponse
-	62, // 136: education.StudentService.SearchStudent:output_type -> education.SearchStudentResponse
-	56, // 137: education.StudentService.GetHistoryGroupById:output_type -> education.GetHistoryGroupResponse
-	57, // 138: education.StudentService.GetHistoryStudentById:output_type -> education.GetHistoryStudentResponse
-	81, // 139: education.StudentService.TransferLessonDate:output_type -> common.AbsResponse
-	81, // 140: education.StudentService.ChangeConditionStudent:output_type -> common.AbsResponse
-	52, // 141: education.StudentService.GetStudentsByGroupId:output_type -> education.GetStudentsByGroupIdResponse
-	81, // 142: education.StudentService.ChangeUserBalanceHistory:output_type -> common.AbsResponse
-	92, // [92:143] is the sub-list for method output_type
-	41, // [41:92] is the sub-list for method input_type
-	41, // [41:41] is the sub-list for extension type_name
-	41, // [41:41] is the sub-list for extension extendee
-	0,  // [0:41] is the sub-list for field type_name
+	2,   // 0: education.GetStatisticResponse.details:type_name -> education.CompanyCommonDetails
+	1,   // 1: education.GetStatisticResponse.registerDetails:type_name -> education.OtherDetails
+	1,   // 2: education.GetStatisticResponse.paymentDetails:type_name -> education.OtherDetails
+	86,  // 3: education.OtherDetails.details:type_name -> education.OtherDetails.DetailsEntry
+	8,   // 4: education.GetAllResponse.items:type_name -> education.GetCompanyResponse
+	9,   // 5: education.GetCompanyResponse.tariff:type_name -> education.Tariff
+	9,   // 6: education.TariffList.items:type_name -> education.Tariff
+	12,  // 7: education.CompanyFinanceSelfList.items:type_name -> education.CompanyFinanceSelf
+	15,  // 8: education.CompanyFinanceList.items:type_name -> education.CompanyFinanceForList
+	18,  // 9: education.GetUpdateRoomAbs.rooms:type_name -> education.AbsRoom
+	21,  // 10: education.GetUpdateCourseAbs.courses:type_name -> education.AbsCourse
+	26,  // 11: education.GetLeftAfterTrialPeriodResponse.items:type_name -> education.AbsGetLeftAfter
+	30,  // 12: education.GetGroupsByTeacherResponse.groups:type_name -> education.GetGroupByTeacherAbs
+	63,  // 13: education.GetGroupByTeacherAbs.students:type_name -> education.AbsStudent
+	35,  // 14: education.GetGroupsByCourseResponse.groups:type_name -> education.GetGroupByCourseAbsResponse
+	21,  // 15: education.GetGroupAbsResponse.course:type_name -> education.AbsCourse
+	18,  // 16: education.GetGroupAbsResponse.room:type_name -> education.AbsRoom
+	36,  // 17: education.GetGroupsResponse.groups:type_name -> education.GetGroupAbsResponse
+	87,  // 18: education.GetGroupsRequest.page:type_name -> common.PageRequest
+	41,  // 19: education.CalculateTeacherSalaryResponse.salaries:type_name -> education.AbsCalculateSalary
+	42,  // 20: education.AbsCalculateSalary.salaries:type_name -> education.StudentSalary
+	45,  // 21: education.GetAttendanceResponse.days:type_name -> education.Day
+	46,  // 22: education.GetAttendanceResponse.students:type_name -> education.Student
+	47,  // 23: education.Student.attendance:type_name -> education.Attendance
+	48,  // 24: education.Student.freezeDetail:type_name -> education.FreezeDetail
+	63,  // 25: education.GetStudentsByGroupIdResponse.students:type_name -> education.AbsStudent
+	60,  // 26: education.GetHistoryGroupResponse.groupHistory:type_name -> education.AbsHistory
+	58,  // 27: education.GetHistoryGroupResponse.studentsHistory:type_name -> education.AbsStudentHistory
+	60,  // 28: education.GetHistoryStudentResponse.studentHistory:type_name -> education.AbsHistory
+	58,  // 29: education.GetHistoryStudentResponse.conditionsHistory:type_name -> education.AbsStudentHistory
+	63,  // 30: education.AbsStudentHistory.student:type_name -> education.AbsStudent
+	59,  // 31: education.AbsStudentHistory.group:type_name -> education.AbsGroup
+	21,  // 32: education.AbsGroup.course:type_name -> education.AbsCourse
+	63,  // 33: education.SearchStudentResponse.students:type_name -> education.AbsStudent
+	66,  // 34: education.GetAllStudentResponse.response:type_name -> education.GetGroupsAbsForStudent
+	67,  // 35: education.GetGroupsAbsForStudent.groups:type_name -> education.GroupGetAllStudentAbs
+	21,  // 36: education.GroupGetAllStudentAbs.course:type_name -> education.AbsCourse
+	73,  // 37: education.GetStudentByIdResponse.groups:type_name -> education.GetGroupStudent
+	18,  // 38: education.GetGroupStudent.room:type_name -> education.AbsRoom
+	21,  // 39: education.GetGroupStudent.course:type_name -> education.AbsCourse
+	75,  // 40: education.GetNotesByStudent.notes:type_name -> education.AbsNote
+	87,  // 41: education.GetSmsLogRequest.pageRequest:type_name -> common.PageRequest
+	83,  // 42: education.GetSmsTemplateResponse.datas:type_name -> education.SmsTemplateList
+	7,   // 43: education.CompanyService.GetCompanyBySubdomain:input_type -> education.GetCompanyRequest
+	6,   // 44: education.CompanyService.CreateCompany:input_type -> education.CreateCompanyRequest
+	87,  // 45: education.CompanyService.GetAll:input_type -> common.PageRequest
+	4,   // 46: education.CompanyService.UpdateCompany:input_type -> education.UpdateCompanyRequest
+	3,   // 47: education.CompanyService.GetStatistic:input_type -> education.GetStatisticRequest
+	9,   // 48: education.TariffService.Create:input_type -> education.Tariff
+	9,   // 49: education.TariffService.Update:input_type -> education.Tariff
+	9,   // 50: education.TariffService.Delete:input_type -> education.Tariff
+	88,  // 51: education.TariffService.Get:input_type -> google.protobuf.Empty
+	11,  // 52: education.CompanyFinanceService.Create:input_type -> education.CompanyFinance
+	89,  // 53: education.CompanyFinanceService.Delete:input_type -> common.DeleteAbsRequest
+	87,  // 54: education.CompanyFinanceService.GetAll:input_type -> common.PageRequest
+	87,  // 55: education.CompanyFinanceService.GetByCompany:input_type -> common.PageRequest
+	11,  // 56: education.CompanyFinanceService.UpdateByCompany:input_type -> education.CompanyFinance
+	16,  // 57: education.RoomService.CreateRoom:input_type -> education.CreateRoomRequest
+	88,  // 58: education.RoomService.GetRooms:input_type -> google.protobuf.Empty
+	18,  // 59: education.RoomService.UpdateRoom:input_type -> education.AbsRoom
+	89,  // 60: education.RoomService.DeleteRoom:input_type -> common.DeleteAbsRequest
+	19,  // 61: education.CourseService.CreateCourse:input_type -> education.CreateCourseRequest
+	88,  // 62: education.CourseService.GetCourses:input_type -> google.protobuf.Empty
+	23,  // 63: education.CourseService.GetCourseById:input_type -> education.GetCourseByIdRequest
+	21,  // 64: education.CourseService.UpdateCourse:input_type -> education.AbsCourse
+	89,  // 65: education.CourseService.DeleteCourse:input_type -> common.DeleteAbsRequest
+	31,  // 66: education.GroupService.CreateGroup:input_type -> education.CreateGroupRequest
+	38,  // 67: education.GroupService.GetGroups:input_type -> education.GetGroupsRequest
+	32,  // 68: education.GroupService.GetGroupById:input_type -> education.GetGroupByIdRequest
+	32,  // 69: education.GroupService.GetGroupsByCourseId:input_type -> education.GetGroupByIdRequest
+	33,  // 70: education.GroupService.UpdateGroup:input_type -> education.GetUpdateGroupAbs
+	89,  // 71: education.GroupService.DeleteGroup:input_type -> common.DeleteAbsRequest
+	28,  // 72: education.GroupService.GetGroupsByTeacherId:input_type -> education.GetGroupsByTeacherIdRequest
+	88,  // 73: education.GroupService.GetCommonInformationEducation:input_type -> google.protobuf.Empty
+	24,  // 74: education.GroupService.GetLeftAfterTrialPeriod:input_type -> education.GetLeftAfterTrialPeriodRequest
+	43,  // 75: education.AttendanceService.GetAttendance:input_type -> education.GetAttendanceRequest
+	49,  // 76: education.AttendanceService.SetAttendance:input_type -> education.SetAttendanceRequest
+	39,  // 77: education.AttendanceService.CalculateTeacherSalaryByAttendance:input_type -> education.CalculateTeacherSalaryRequest
+	64,  // 78: education.StudentService.GetAllStudent:input_type -> education.GetAllStudentRequest
+	68,  // 79: education.StudentService.CreateStudent:input_type -> education.CreateStudentRequest
+	69,  // 80: education.StudentService.UpdateStudent:input_type -> education.UpdateStudentRequest
+	51,  // 81: education.StudentService.DeleteStudent:input_type -> education.DeleteStudentRequest
+	70,  // 82: education.StudentService.AddToGroup:input_type -> education.AddToGroupRequest
+	72,  // 83: education.StudentService.GetStudentById:input_type -> education.NoteStudentByAbsRequest
+	72,  // 84: education.StudentService.GetNoteByStudent:input_type -> education.NoteStudentByAbsRequest
+	76,  // 85: education.StudentService.CreateNoteForStudent:input_type -> education.CreateNoteRequest
+	72,  // 86: education.StudentService.DeleteStudentNote:input_type -> education.NoteStudentByAbsRequest
+	61,  // 87: education.StudentService.SearchStudent:input_type -> education.SearchStudentRequest
+	72,  // 88: education.StudentService.GetHistoryGroupById:input_type -> education.NoteStudentByAbsRequest
+	72,  // 89: education.StudentService.GetHistoryStudentById:input_type -> education.NoteStudentByAbsRequest
+	55,  // 90: education.StudentService.TransferLessonDate:input_type -> education.TransferLessonRequest
+	54,  // 91: education.StudentService.ChangeConditionStudent:input_type -> education.ChangeConditionStudentRequest
+	53,  // 92: education.StudentService.GetStudentsByGroupId:input_type -> education.GetStudentsByGroupIdRequest
+	50,  // 93: education.StudentService.ChangeUserBalanceHistory:input_type -> education.ChangeUserBalanceHistoryRequest
+	77,  // 94: education.SmsService.GetSmsLogs:input_type -> education.GetSmsLogRequest
+	79,  // 95: education.SmsService.AddSms:input_type -> education.AddSmsRequest
+	89,  // 96: education.SmsService.DeleteSms:input_type -> common.DeleteAbsRequest
+	87,  // 97: education.SmsService.GetSmsTransactionDetail:input_type -> common.PageRequest
+	81,  // 98: education.SmsService.GetSmsTemplate:input_type -> education.GetSmsTemplateRequest
+	84,  // 99: education.SmsService.SetSmsTemplate:input_type -> education.SetSmsTemplateRequest
+	85,  // 100: education.SmsService.SendSmsDirectly:input_type -> education.SendSmsDirectlyRequest
+	8,   // 101: education.CompanyService.GetCompanyBySubdomain:output_type -> education.GetCompanyResponse
+	90,  // 102: education.CompanyService.CreateCompany:output_type -> common.AbsResponse
+	5,   // 103: education.CompanyService.GetAll:output_type -> education.GetAllResponse
+	90,  // 104: education.CompanyService.UpdateCompany:output_type -> common.AbsResponse
+	0,   // 105: education.CompanyService.GetStatistic:output_type -> education.GetStatisticResponse
+	9,   // 106: education.TariffService.Create:output_type -> education.Tariff
+	9,   // 107: education.TariffService.Update:output_type -> education.Tariff
+	9,   // 108: education.TariffService.Delete:output_type -> education.Tariff
+	10,  // 109: education.TariffService.Get:output_type -> education.TariffList
+	11,  // 110: education.CompanyFinanceService.Create:output_type -> education.CompanyFinance
+	90,  // 111: education.CompanyFinanceService.Delete:output_type -> common.AbsResponse
+	14,  // 112: education.CompanyFinanceService.GetAll:output_type -> education.CompanyFinanceList
+	13,  // 113: education.CompanyFinanceService.GetByCompany:output_type -> education.CompanyFinanceSelfList
+	11,  // 114: education.CompanyFinanceService.UpdateByCompany:output_type -> education.CompanyFinance
+	90,  // 115: education.RoomService.CreateRoom:output_type -> common.AbsResponse
+	17,  // 116: education.RoomService.GetRooms:output_type -> education.GetUpdateRoomAbs
+	90,  // 117: education.RoomService.UpdateRoom:output_type -> common.AbsResponse
+	90,  // 118: education.RoomService.DeleteRoom:output_type -> common.AbsResponse
+	90,  // 119: education.CourseService.CreateCourse:output_type -> common.AbsResponse
+	20,  // 120: education.CourseService.GetCourses:output_type -> education.GetUpdateCourseAbs
+	22,  // 121: education.CourseService.GetCourseById:output_type -> education.GetCourseByIdResponse
+	90,  // 122: education.CourseService.UpdateCourse:output_type -> common.AbsResponse
+	90,  // 123: education.CourseService.DeleteCourse:output_type -> common.AbsResponse
+	90,  // 124: education.GroupService.CreateGroup:output_type -> common.AbsResponse
+	37,  // 125: education.GroupService.GetGroups:output_type -> education.GetGroupsResponse
+	36,  // 126: education.GroupService.GetGroupById:output_type -> education.GetGroupAbsResponse
+	34,  // 127: education.GroupService.GetGroupsByCourseId:output_type -> education.GetGroupsByCourseResponse
+	90,  // 128: education.GroupService.UpdateGroup:output_type -> common.AbsResponse
+	90,  // 129: education.GroupService.DeleteGroup:output_type -> common.AbsResponse
+	29,  // 130: education.GroupService.GetGroupsByTeacherId:output_type -> education.GetGroupsByTeacherResponse
+	27,  // 131: education.GroupService.GetCommonInformationEducation:output_type -> education.GetCommonInformationEducationResponse
+	25,  // 132: education.GroupService.GetLeftAfterTrialPeriod:output_type -> education.GetLeftAfterTrialPeriodResponse
+	44,  // 133: education.AttendanceService.GetAttendance:output_type -> education.GetAttendanceResponse
+	90,  // 134: education.AttendanceService.SetAttendance:output_type -> common.AbsResponse
+	40,  // 135: education.AttendanceService.CalculateTeacherSalaryByAttendance:output_type -> education.CalculateTeacherSalaryResponse
+	65,  // 136: education.StudentService.GetAllStudent:output_type -> education.GetAllStudentResponse
+	90,  // 137: education.StudentService.CreateStudent:output_type -> common.AbsResponse
+	90,  // 138: education.StudentService.UpdateStudent:output_type -> common.AbsResponse
+	90,  // 139: education.StudentService.DeleteStudent:output_type -> common.AbsResponse
+	90,  // 140: education.StudentService.AddToGroup:output_type -> common.AbsResponse
+	71,  // 141: education.StudentService.GetStudentById:output_type -> education.GetStudentByIdResponse
+	74,  // 142: education.StudentService.GetNoteByStudent:output_type -> education.GetNotesByStudent
+	90,  // 143: education.StudentService.CreateNoteForStudent:output_type -> common.AbsResponse
+	90,  // 144: education.StudentService.DeleteStudentNote:output_type -> common.AbsResponse
+	62,  // 145: education.StudentService.SearchStudent:output_type -> education.SearchStudentResponse
+	56,  // 146: education.StudentService.GetHistoryGroupById:output_type -> education.GetHistoryGroupResponse
+	57,  // 147: education.StudentService.GetHistoryStudentById:output_type -> education.GetHistoryStudentResponse
+	90,  // 148: education.StudentService.TransferLessonDate:output_type -> common.AbsResponse
+	90,  // 149: education.StudentService.ChangeConditionStudent:output_type -> common.AbsResponse
+	52,  // 150: education.StudentService.GetStudentsByGroupId:output_type -> education.GetStudentsByGroupIdResponse
+	90,  // 151: education.StudentService.ChangeUserBalanceHistory:output_type -> common.AbsResponse
+	78,  // 152: education.SmsService.GetSmsLogs:output_type -> education.GetSmsLogResponse
+	90,  // 153: education.SmsService.AddSms:output_type -> common.AbsResponse
+	90,  // 154: education.SmsService.DeleteSms:output_type -> common.AbsResponse
+	80,  // 155: education.SmsService.GetSmsTransactionDetail:output_type -> education.GetSmsTransactionDetailResponse
+	82,  // 156: education.SmsService.GetSmsTemplate:output_type -> education.GetSmsTemplateResponse
+	90,  // 157: education.SmsService.SetSmsTemplate:output_type -> common.AbsResponse
+	90,  // 158: education.SmsService.SendSmsDirectly:output_type -> common.AbsResponse
+	101, // [101:159] is the sub-list for method output_type
+	43,  // [43:101] is the sub-list for method input_type
+	43,  // [43:43] is the sub-list for extension type_name
+	43,  // [43:43] is the sub-list for extension extendee
+	0,   // [0:43] is the sub-list for field type_name
 }
 
 func init() { file_education_proto_init() }
@@ -6951,9 +7602,9 @@ func file_education_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_education_proto_rawDesc), len(file_education_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   78,
+			NumMessages:   87,
 			NumExtensions: 0,
-			NumServices:   8,
+			NumServices:   9,
 		},
 		GoTypes:           file_education_proto_goTypes,
 		DependencyIndexes: file_education_proto_depIdxs,
