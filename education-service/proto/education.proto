@@ -789,6 +789,7 @@ message SetSmsTemplateRequest{
   int32 smsCount=4;
   string isActive=5;
   int32 insufficientBalanceResendCount=6;
+  string newSmsValue=7;
 }
 
 message SendSmsDirectlyRequest{

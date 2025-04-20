@@ -1623,6 +1623,8 @@ definitions:
         type: integer
       isActive:
         type: string
+      newSmsValue:
+        type: string
       smsCount:
         type: integer
       smsValue:

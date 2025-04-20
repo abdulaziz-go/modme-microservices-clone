@@ -8119,6 +8119,9 @@ const docTemplate = `{
                 "isActive": {
                     "type": "string"
                 },
+                "newSmsValue": {
+                    "type": "string"
+                },
                 "smsCount": {
                     "type": "integer"
                 },

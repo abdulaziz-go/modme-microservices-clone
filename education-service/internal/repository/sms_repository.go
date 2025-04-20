@@ -321,7 +321,7 @@ func (r SmsRepository) SetSmsTemplate(req *pb.SetSmsTemplateRequest, companyId s
 	var err error
 
 	isCyrillic := false
-	for _, r := range req.SmsValue {
+	for _, r := range req.NewSmsValue {
 		if r >= 0x0400 && r <= 0x04FF {
 			isCyrillic = true
 			break
@@ -335,7 +335,7 @@ func (r SmsRepository) SetSmsTemplate(req *pb.SetSmsTemplateRequest, companyId s
 		charsPerSms = 160
 	}
 
-	runes := []rune(req.SmsValue)
+	runes := []rune(req.NewSmsValue)
 	totalLen := len(runes)
 	req.SmsCount = int32(totalLen / charsPerSms)
 	if totalLen%charsPerSms != 0 {
