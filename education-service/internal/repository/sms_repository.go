@@ -281,6 +281,18 @@ func (r SmsRepository) SendSmsDirectly(req *pb.SendSmsDirectlyRequest, companyId
 		}
 	}()
 
+	// Check balance
+	var currentBalance int
+	err = tx.QueryRow(`SELECT sms_balance FROM company WHERE id = $1`, companyId).Scan(&currentBalance)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get sms_balance: %w", err)
+	}
+	if currentBalance < int(smsCount) {
+		_ = tx.Rollback()
+		return nil, fmt.Errorf("insufficient sms balance: have %d, need %d", currentBalance, smsCount)
+	}
+
+	// Insert sms_used
 	_, err = tx.Exec(`
 		INSERT INTO sms_used (id, company_id, texts, sms_count, created_by_id, created_by_name, sms_used_type, student_id)
 		VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, 'BY_SELF', $6)
@@ -289,10 +301,11 @@ func (r SmsRepository) SendSmsDirectly(req *pb.SendSmsDirectlyRequest, companyId
 		return nil, fmt.Errorf("failed to insert sms_used: %w", err)
 	}
 
-	//if sendErr := utils.SendSMS(phoneNumber, req.SmsValue); sendErr != nil {
-	//	_ = tx.Rollback()
-	//	return nil, fmt.Errorf("failed to send sms: %w", sendErr)
-	//}
+	// Update balance
+	_, err = tx.Exec(`UPDATE company SET sms_balance = sms_balance - $1 WHERE id = $2`, smsCount, companyId)
+	if err != nil {
+		return nil, fmt.Errorf("failed to update sms_balance: %w", err)
+	}
 
 	if err = tx.Commit(); err != nil {
 		return nil, fmt.Errorf("failed to commit transaction: %w", err)
