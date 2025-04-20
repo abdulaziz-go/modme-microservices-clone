@@ -751,6 +751,355 @@
                 }
             }
         },
+        "/api/company/sms/add-sms-count": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "SUPER_CEO role can add SMS count",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "company-sms"
+                ],
+                "summary": "Add SMS count to a company",
+                "parameters": [
+                    {
+                        "description": "Add SMS count request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.AddSmsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.AbsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.AbsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.AbsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/company/sms/delete-sms-count": {
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "SUPER_CEO role can delete SMS transaction",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "company-sms"
+                ],
+                "summary": "Delete SMS count by transaction ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Transaction ID",
+                        "name": "transactionId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.AbsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.AbsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/company/sms/get-logs": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "ADMIN, CEO, FINANCIST, SUPER_CEO roles can retrieve SMS logs",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "company-sms"
+                ],
+                "summary": "Get SMS logs",
+                "parameters": [
+                    {
+                        "description": "Request for fetching SMS logs",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetSmsLogRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetSmsLogResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.AbsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.AbsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/company/sms/get-sms-count-all": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "ADMIN, CEO, SUPER_CEO roles can access this",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "company-sms"
+                ],
+                "summary": "Get all SMS transactions (paginated)",
+                "parameters": [
+                    {
+                        "description": "Pagination request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.PageRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetSmsTransactionDetailResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.AbsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.AbsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/company/sms/send-directly": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "ADMIN, CEO roles can send SMS",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "company-sms"
+                ],
+                "summary": "Send an SMS message directly",
+                "parameters": [
+                    {
+                        "description": "Send SMS directly request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.SendSmsDirectlyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.AbsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.AbsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.AbsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/company/sms/template/get-templates": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "ADMIN, CEO roles can fetch templates",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "company-sms-template"
+                ],
+                "summary": "Get SMS templates",
+                "parameters": [
+                    {
+                        "description": "Get templates request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetSmsTemplateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.GetSmsTemplateResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.AbsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.AbsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/company/sms/template/set-template": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "CEO, ADMIN roles can update templates",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "company-sms-template"
+                ],
+                "summary": "Set or update SMS templates",
+                "parameters": [
+                    {
+                        "description": "Set template request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pb.SetSmsTemplateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pb.AbsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.AbsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.AbsResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/company/subdomain/{domain}": {
             "get": {
                 "description": "Retrieve the data company by domain",
@@ -5626,6 +5975,17 @@
                 }
             }
         },
+        "pb.AbsResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
         "pb.AbsRoom": {
             "type": "object",
             "properties": {
@@ -5766,6 +6126,23 @@
                 },
                 "phoneNumber": {
                     "type": "string"
+                }
+            }
+        },
+        "pb.AddSmsRequest": {
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "companyId": {
+                    "type": "string"
+                },
+                "smsCount": {
+                    "type": "integer"
+                },
+                "sum": {
+                    "type": "integer"
                 }
             }
         },
@@ -7166,6 +7543,67 @@
                 }
             }
         },
+        "pb.GetSmsLogRequest": {
+            "type": "object",
+            "properties": {
+                "pageRequest": {
+                    "$ref": "#/definitions/pb.PageRequest"
+                },
+                "studentId": {
+                    "type": "string"
+                }
+            }
+        },
+        "pb.GetSmsLogResponse": {
+            "type": "object",
+            "properties": {
+                "datas": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.SmsLogList"
+                    }
+                }
+            }
+        },
+        "pb.GetSmsTemplateRequest": {
+            "type": "object",
+            "properties": {
+                "smsType": {
+                    "type": "string"
+                }
+            }
+        },
+        "pb.GetSmsTemplateResponse": {
+            "type": "object",
+            "properties": {
+                "datas": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pb.SmsTemplateList"
+                    }
+                },
+                "insufficientBalanceResendCount": {
+                    "type": "integer"
+                },
+                "smsType": {
+                    "type": "string"
+                }
+            }
+        },
+        "pb.GetSmsTransactionDetailResponse": {
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "smsCount": {
+                    "type": "integer"
+                },
+                "sum": {
+                    "type": "integer"
+                }
+            }
+        },
         "pb.GetStatisticRequest": {
             "type": "object",
             "properties": {
@@ -7563,6 +8001,23 @@
                 }
             }
         },
+        "pb.SendSmsDirectlyRequest": {
+            "type": "object",
+            "properties": {
+                "creatorId": {
+                    "type": "string"
+                },
+                "creatorName": {
+                    "type": "string"
+                },
+                "smsCount": {
+                    "type": "integer"
+                },
+                "smsValue": {
+                    "type": "string"
+                }
+            }
+        },
         "pb.SetAttendanceRequest": {
             "type": "object",
             "properties": {
@@ -7617,6 +8072,64 @@
                     "type": "string"
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "pb.SetSmsTemplateRequest": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "description": "delete , update",
+                    "type": "string"
+                },
+                "actionName": {
+                    "type": "string"
+                },
+                "insufficientBalanceResendCount": {
+                    "type": "integer"
+                },
+                "isActive": {
+                    "type": "string"
+                },
+                "smsCount": {
+                    "type": "integer"
+                },
+                "smsValue": {
+                    "type": "string"
+                }
+            }
+        },
+        "pb.SmsLogList": {
+            "type": "object",
+            "properties": {
+                "creatorName": {
+                    "type": "string"
+                },
+                "sendDate": {
+                    "type": "string"
+                },
+                "smsCount": {
+                    "type": "integer"
+                },
+                "smsValue": {
+                    "type": "string"
+                }
+            }
+        },
+        "pb.SmsTemplateList": {
+            "type": "object",
+            "properties": {
+                "actionName": {
+                    "type": "string"
+                },
+                "isActive": {
+                    "type": "string"
+                },
+                "smsCount": {
+                    "type": "integer"
+                },
+                "smsValue": {
                     "type": "string"
                 }
             }

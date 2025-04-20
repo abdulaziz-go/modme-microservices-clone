@@ -283,23 +283,23 @@ func (lc *EducationClient) GetStatisticCompany(req *pb.GetStatisticRequest) (*pb
 }
 
 func (lc *EducationClient) GetSmsLogs(ctx context.Context, req *pb.GetSmsLogRequest) (*pb.GetSmsLogResponse, error) {
-	return nil, nil
+	return lc.smsServiceClient.GetSmsLogs(ctx, req)
 }
 func (lc *EducationClient) AddSms(ctx context.Context, req *pb.AddSmsRequest) (*pb.AbsResponse, error) {
-	return nil, nil
+	return lc.smsServiceClient.AddSms(ctx, req)
 }
 func (lc *EducationClient) DeleteSms(ctx context.Context, req *pb.DeleteAbsRequest) (*pb.AbsResponse, error) {
-	return nil, nil
+	return lc.smsServiceClient.DeleteSms(ctx, req)
 }
 func (lc *EducationClient) GetSmsTransactionDetail(ctx context.Context, req *pb.PageRequest) (*pb.GetSmsTransactionDetailResponse, error) {
-	return nil, nil
+	return lc.smsServiceClient.GetSmsTransactionDetail(ctx, req)
 }
 func (lc *EducationClient) GetSmsTemplate(ctx context.Context, req *pb.GetSmsTemplateRequest) (*pb.GetSmsTemplateResponse, error) {
-	return nil, nil
+	return lc.smsServiceClient.GetSmsTemplate(ctx, req)
 }
 func (lc *EducationClient) SetSmsTemplate(ctx context.Context, req *pb.SetSmsTemplateRequest) (*pb.AbsResponse, error) {
-	return nil, nil
+	return lc.smsServiceClient.SetSmsTemplate(ctx, req)
 }
 func (lc *EducationClient) SendSmsDirectly(ctx context.Context, req *pb.SendSmsDirectlyRequest) (*pb.AbsResponse, error) {
-	return nil, nil
+	return lc.smsServiceClient.SendSmsDirectly(ctx, req)
 }

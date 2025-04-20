@@ -236,6 +236,13 @@ definitions:
       sum:
         type: string
     type: object
+  pb.AbsResponse:
+    properties:
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
   pb.AbsRoom:
     properties:
       capacity:
@@ -328,6 +335,17 @@ definitions:
         type: string
       phoneNumber:
         type: string
+    type: object
+  pb.AddSmsRequest:
+    properties:
+      comment:
+        type: string
+      companyId:
+        type: string
+      smsCount:
+        type: integer
+      sum:
+        type: integer
     type: object
   pb.AddToGroupRequest:
     properties:
@@ -1237,6 +1255,45 @@ definitions:
           $ref: '#/definitions/pb.AbsNote'
         type: array
     type: object
+  pb.GetSmsLogRequest:
+    properties:
+      pageRequest:
+        $ref: '#/definitions/pb.PageRequest'
+      studentId:
+        type: string
+    type: object
+  pb.GetSmsLogResponse:
+    properties:
+      datas:
+        items:
+          $ref: '#/definitions/pb.SmsLogList'
+        type: array
+    type: object
+  pb.GetSmsTemplateRequest:
+    properties:
+      smsType:
+        type: string
+    type: object
+  pb.GetSmsTemplateResponse:
+    properties:
+      datas:
+        items:
+          $ref: '#/definitions/pb.SmsTemplateList'
+        type: array
+      insufficientBalanceResendCount:
+        type: integer
+      smsType:
+        type: string
+    type: object
+  pb.GetSmsTransactionDetailResponse:
+    properties:
+      comment:
+        type: string
+      smsCount:
+        type: integer
+      sum:
+        type: integer
+    type: object
   pb.GetStatisticRequest:
     properties:
       from:
@@ -1495,6 +1552,17 @@ definitions:
       type:
         type: string
     type: object
+  pb.SendSmsDirectlyRequest:
+    properties:
+      creatorId:
+        type: string
+      creatorName:
+        type: string
+      smsCount:
+        type: integer
+      smsValue:
+        type: string
+    type: object
   pb.SetAttendanceRequest:
     properties:
       actionById:
@@ -1531,6 +1599,44 @@ definitions:
       teacherName:
         type: string
       title:
+        type: string
+    type: object
+  pb.SetSmsTemplateRequest:
+    properties:
+      action:
+        description: delete , update
+        type: string
+      actionName:
+        type: string
+      insufficientBalanceResendCount:
+        type: integer
+      isActive:
+        type: string
+      smsCount:
+        type: integer
+      smsValue:
+        type: string
+    type: object
+  pb.SmsLogList:
+    properties:
+      creatorName:
+        type: string
+      sendDate:
+        type: string
+      smsCount:
+        type: integer
+      smsValue:
+        type: string
+    type: object
+  pb.SmsTemplateList:
+    properties:
+      actionName:
+        type: string
+      isActive:
+        type: string
+      smsCount:
+        type: integer
+      smsValue:
         type: string
     type: object
   pb.SortBy:
@@ -2200,6 +2306,225 @@ paths:
       summary: SUPER_CEO
       tags:
       - company
+  /api/company/sms/add-sms-count:
+    post:
+      consumes:
+      - application/json
+      description: SUPER_CEO role can add SMS count
+      parameters:
+      - description: Add SMS count request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/pb.AddSmsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.AbsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.AbsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.AbsResponse'
+      security:
+      - Bearer: []
+      summary: Add SMS count to a company
+      tags:
+      - company-sms
+  /api/company/sms/delete-sms-count:
+    delete:
+      consumes:
+      - application/json
+      description: SUPER_CEO role can delete SMS transaction
+      parameters:
+      - description: Transaction ID
+        in: query
+        name: transactionId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.AbsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.AbsResponse'
+      security:
+      - Bearer: []
+      summary: Delete SMS count by transaction ID
+      tags:
+      - company-sms
+  /api/company/sms/get-logs:
+    post:
+      consumes:
+      - application/json
+      description: ADMIN, CEO, FINANCIST, SUPER_CEO roles can retrieve SMS logs
+      parameters:
+      - description: Request for fetching SMS logs
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/pb.GetSmsLogRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.GetSmsLogResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.AbsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.AbsResponse'
+      security:
+      - Bearer: []
+      summary: Get SMS logs
+      tags:
+      - company-sms
+  /api/company/sms/get-sms-count-all:
+    post:
+      consumes:
+      - application/json
+      description: ADMIN, CEO, SUPER_CEO roles can access this
+      parameters:
+      - description: Pagination request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/pb.PageRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.GetSmsTransactionDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.AbsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.AbsResponse'
+      security:
+      - Bearer: []
+      summary: Get all SMS transactions (paginated)
+      tags:
+      - company-sms
+  /api/company/sms/send-directly:
+    post:
+      consumes:
+      - application/json
+      description: ADMIN, CEO roles can send SMS
+      parameters:
+      - description: Send SMS directly request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.SendSmsDirectlyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.AbsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.AbsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.AbsResponse'
+      security:
+      - Bearer: []
+      summary: Send an SMS message directly
+      tags:
+      - company-sms
+  /api/company/sms/template/get-templates:
+    post:
+      consumes:
+      - application/json
+      description: ADMIN, CEO roles can fetch templates
+      parameters:
+      - description: Get templates request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/pb.GetSmsTemplateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.GetSmsTemplateResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.AbsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.AbsResponse'
+      security:
+      - Bearer: []
+      summary: Get SMS templates
+      tags:
+      - company-sms-template
+  /api/company/sms/template/set-template:
+    put:
+      consumes:
+      - application/json
+      description: CEO, ADMIN roles can update templates
+      parameters:
+      - description: Set template request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/pb.SetSmsTemplateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.AbsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.AbsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.AbsResponse'
+      security:
+      - Bearer: []
+      summary: Set or update SMS templates
+      tags:
+      - company-sms-template
   /api/company/subdomain/{domain}:
     get:
       consumes:

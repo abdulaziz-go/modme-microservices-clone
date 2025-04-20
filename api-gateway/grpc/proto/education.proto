@@ -688,6 +688,9 @@ message GetSmsLogRequest {
   string studentId=2;
 }
 message GetSmsLogResponse {
+ repeated SmsLogList datas=1;
+}
+message SmsLogList{
   string creatorName =1;
   string smsValue = 2;
   int32 smsCount=3;
