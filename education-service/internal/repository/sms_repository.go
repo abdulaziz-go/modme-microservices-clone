@@ -357,12 +357,12 @@ func (r SmsRepository) SetSmsTemplate(req *pb.SetSmsTemplateRequest, companyId s
 			_, err = r.db.Exec(`
 				DELETE FROM sms_template
 				WHERE company_id = $1 AND sms_template_type = 'ACTION' AND action_type = $2
-			`, companyId, req.SmsValue)
+			`, companyId, req.ActionName)
 		} else {
 			_, err = r.db.Exec(`
 				DELETE FROM sms_template
-				WHERE company_id = $1 AND sms_template_type = 'TEMPLATE' AND array_to_string(texts, ' ') = $2
-			`, companyId, req.SmsValue)
+				WHERE company_id = $1 AND sms_template_type = 'TEMPLATE' AND texts = $2::text[]
+			`, companyId, pq.Array(textParts))
 		}
 	case "update":
 		isActive := false
