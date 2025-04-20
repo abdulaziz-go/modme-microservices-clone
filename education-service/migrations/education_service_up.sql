@@ -297,6 +297,51 @@ CREATE TABLE IF NOT EXISTS group_student_condition_history
 );
 
 
+-- SMS SERVICE TABLES
+CREATE TABLE IF NOT EXISTS "sms_payments" (
+                                "id" SERIAL PRIMARY KEY,
+                                "company_id" int NOT NULL,
+                                "comment" varchar,
+                                "sum" float NOT NULL,
+                                "sms_count" float NOT NULL,
+                                "created_at" timestamp DEFAULT (CURRENT_TIMESTAMP)
+);
+
+
+CREATE TABLE IF NOT EXISTS "sms_template" (
+                                "id" SERIAL PRIMARY KEY,
+                                "company_id" int NOT NULL,
+                                "texts" text[] NOT NULL,
+                                "sms_count" int NOT NULL,
+                                "action_type" varchar check ( action_type in ('BEFORE_PAYMENT_ALERT' , 'INSUFFICIENT_BALANCE_ALERT' , 'PAYMENT_SUCCESSFUL_ALERT' , 'JOINED_GROUP_ALERT' , 'BIRTHDAY_ALERT' , 'NOT_PARTICIPATE_ALERT')),
+                                "insufficient_balance_send_count" int NOT NULL DEFAULT 1,
+                                "sms_template_type" varchar check ( sms_template_type in ('ACTION' , 'TEMPLATE')),
+                                "is_active" bool DEFAULT FALSE,
+                                "created_at" timestamp DEFAULT (CURRENT_TIMESTAMP)
+);
+
+CREATE TABLE IF NOT EXISTS "sms_used" (
+                            "id" uuid PRIMARY KEY,
+                            "company_id" int NOT NULL,
+                            "sms_template_id" int NOT NULL,
+                            "texts" text[] NOT NULL,
+                            "sms_count" int NOT NULL,
+                            "student_id" uuid references students(id),
+                            "sms_used_type" varchar check ( sms_used_type in ('BY_SELF' , 'BY_TEMPLATE')),
+                            "created_at" timestamp DEFAULT (CURRENT_TIMESTAMP)
+);
+
+ALTER TABLE "sms_used" ADD FOREIGN KEY ("sms_template_id") REFERENCES "sms_template" ("id");
+
+ALTER TABLE "sms_used" ADD FOREIGN KEY ("company_id") REFERENCES "company" ("id");
+
+ALTER TABLE "sms_payments" ADD FOREIGN KEY ("company_id") REFERENCES "company" ("id");
+
+ALTER TABLE "sms_template" ADD FOREIGN KEY ("id") REFERENCES "company" ("id");
+
+
+
+
 CREATE INDEX IF NOT EXISTS idx_attendance_group_date ON attendance (group_id, attend_date);
 CREATE INDEX IF NOT EXISTS idx_group_students_group ON group_students (group_id);
 CREATE OR REPLACE FUNCTION log_group_update()

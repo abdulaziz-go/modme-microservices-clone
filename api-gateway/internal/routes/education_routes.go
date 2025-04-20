@@ -21,10 +21,10 @@ func EducationRoutes(api *gin.RouterGroup, userClient *client.UserClient) {
 	company := api.Group("/company")
 	{
 		company.GET("/subdomain/:domain", handlers.GetCompanyBySubdomain)
-		company.POST("/create", handlers.CompanyCreate)
-		company.GET("/get-all", handlers.GetAllCompanies)
-		company.PUT("/update", handlers.CompanyUpdate)
-		company.POST("/get-statistic", handlers.GetStatisticCompany)
+		company.POST("/create", etc.AuthMiddleware([]string{"SUPER_CEO"}, userClient), handlers.CompanyCreate)
+		company.GET("/get-all", etc.AuthMiddleware([]string{"SUPER_CEO"}, userClient), handlers.GetAllCompanies)
+		company.PUT("/update", etc.AuthMiddleware([]string{"SUPER_CEO"}, userClient), handlers.CompanyUpdate)
+		company.POST("/get-statistic", etc.AuthMiddleware([]string{"SUPER_CEO"}, userClient), handlers.GetStatisticCompany)
 		tariff := company.Group("/tariff")
 		{
 			tariff.POST("/create", handlers.TariffCreate)
@@ -40,6 +40,15 @@ func EducationRoutes(api *gin.RouterGroup, userClient *client.UserClient) {
 			finance.POST("/get-by-company", handlers.FinanceGetByCompany)
 			finance.PUT("/update", handlers.FinanceUpdateByCompany)
 		}
+		companySms := company.Group("/sms")
+		companySms.GET("/get-logs", etc.AuthMiddleware([]string{"ADMIN", "CEO", "FINANCIST", "SUPER_CEO"}, userClient), handlers.GetSmsLogs)
+		companySms.POST("/add-sms-count", etc.AuthMiddleware([]string{"SUPER_CEO"}, userClient), handlers.AddSmsCount)
+		companySms.DELETE("/delete-sms-count", etc.AuthMiddleware([]string{"SUPER_CEO"}, userClient), handlers.DeleteSmsCount)
+		companySms.GET("/get-sms-count-all", etc.AuthMiddleware([]string{"ADMIN, CEO", "SUPER_CEO"}, userClient), handlers.GetSmsTransactionDetail)
+		companySms.POST("/send-directly", etc.AuthMiddleware([]string{"ADMIN", "CEO"}, userClient), handlers.SendSmsDirectly)
+		companySmsTemplate := companySms.Group("/template")
+		companySmsTemplate.GET("/get-templates", etc.AuthMiddleware([]string{"ADMIN", "CEO"}, userClient), handlers.GetSmsTemplates)
+		companySmsTemplate.POST("/set-template", etc.AuthMiddleware([]string{"CEO", "ADMIN"}, userClient), handlers.SetSmsTemplates)
 	}
 
 	room := api.Group("/room")
