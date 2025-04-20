@@ -375,13 +375,13 @@ func (r SmsRepository) SetSmsTemplate(req *pb.SetSmsTemplateRequest, companyId s
 				UPDATE sms_template
 				SET texts = $1::text[], sms_count = $2, is_active = $3, insufficient_balance_send_count = $4
 				WHERE company_id = $5 AND sms_template_type = 'ACTION' AND action_type = $6
-			`, textParts, req.SmsCount, isActive, req.InsufficientBalanceResendCount, companyId, req.SmsValue)
+			`, pq.Array(textParts), req.SmsCount, isActive, req.InsufficientBalanceResendCount, companyId, req.SmsValue)
 		} else {
 			_, err = r.db.Exec(`
 				UPDATE sms_template
 				SET texts = $1::text[], sms_count = $2, is_active = $3
 				WHERE company_id = $4 AND sms_template_type = 'TEMPLATE' AND array_to_string(texts, ' ') = $5
-			`, textParts, req.SmsCount, isActive, companyId, req.SmsValue)
+			`, pq.Array(textParts), req.SmsCount, isActive, companyId, req.SmsValue)
 		}
 	case "create":
 		isActive := false
@@ -393,12 +393,12 @@ func (r SmsRepository) SetSmsTemplate(req *pb.SetSmsTemplateRequest, companyId s
 			_, err = r.db.Exec(`
 				INSERT INTO sms_template (company_id, texts, sms_count, is_active, insufficient_balance_send_count, sms_template_type, action_type)
 				VALUES ($1, $2::text[], $3, $4, $5, 'ACTION', $6)
-			`, companyId, textParts, req.SmsCount, isActive, req.InsufficientBalanceResendCount, req.SmsValue)
+			`, companyId, pq.Array(textParts), req.SmsCount, isActive, req.InsufficientBalanceResendCount, req.SmsValue)
 		} else {
 			_, err = r.db.Exec(`
 				INSERT INTO sms_template (company_id, texts, sms_count, is_active, sms_template_type)
 				VALUES ($1, $2::text[], $3, $4, 'TEMPLATE')
-			`, companyId, textParts, req.SmsCount, isActive)
+			`, companyId, pq.Array(textParts), req.SmsCount, isActive)
 		}
 	default:
 		return nil, fmt.Errorf("unknown action: %s", req.Action)
