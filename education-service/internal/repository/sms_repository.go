@@ -334,8 +334,12 @@ func (r SmsRepository) SetSmsTemplate(req *pb.SetSmsTemplateRequest, companyId s
 	} else {
 		charsPerSms = 160
 	}
-
-	runes := []rune(req.NewSmsValue)
+	var runes []rune
+	if req.Action == "create" || req.Action == "delete" {
+		runes = []rune(req.SmsValue)
+	} else {
+		runes = []rune(req.NewSmsValue)
+	}
 	totalLen := len(runes)
 	req.SmsCount = int32(totalLen / charsPerSms)
 	if totalLen%charsPerSms != 0 {
