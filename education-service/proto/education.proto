@@ -760,6 +760,9 @@ message AddSmsRequest{
   int32 sum=4;
 }
 message GetSmsTransactionDetailResponse{
+  repeated GetSmsTransactionList datas=1;
+}
+message GetSmsTransactionList{
   string comment=1;
   int32 smsCount=2;
   int32 sum=3;

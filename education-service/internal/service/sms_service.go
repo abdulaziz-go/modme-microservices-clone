@@ -30,16 +30,16 @@ func (s *SmsService) GetSmsLogs(ctx context.Context, req *pb.GetSmsLogRequest) (
 }
 
 func (s *SmsService) AddSms(ctx context.Context, req *pb.AddSmsRequest) (*pb.AbsResponse, error) {
-	return nil, nil
+	return s.smsRepo.AddSms(req)
 }
 func (s *SmsService) DeleteSms(ctx context.Context, req *pb.DeleteAbsRequest) (*pb.AbsResponse, error) {
-	return nil, nil
+	return s.smsRepo.DeleteSms(req.Id)
 }
 func (s *SmsService) GetSmsTransactionDetail(ctx context.Context, req *pb.PageRequest) (*pb.GetSmsTransactionDetailResponse, error) {
-	return nil, nil
+	return s.smsRepo.GetSmsTransactionDetail(req.Page, req.Size, req.CompanyId)
 }
 func (s *SmsService) GetSmsTemplate(ctx context.Context, req *pb.GetSmsTemplateRequest) (*pb.GetSmsTemplateResponse, error) {
-	return nil, nil
+	return s.smsRepo.GetSmsTemplate(req.SmsType)
 }
 func (s *SmsService) SetSmsTemplate(ctx context.Context, req *pb.SetSmsTemplateRequest) (*pb.AbsResponse, error) {
 	return nil, nil

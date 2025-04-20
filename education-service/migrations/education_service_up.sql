@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS company
     tariff_id     int references tariff (id) NOT NULL,
     discount_id   varchar,
     is_demo       bool                                DEFAULT FALSE,
+    sms_balance  int DEFAULT 0,
     created_at    timestamp                           DEFAULT CURRENT_TIMESTAMP
 );
 
