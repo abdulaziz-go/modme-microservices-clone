@@ -727,3 +727,70 @@ message CreateNoteRequest{
   string studentId = 2;
 }
 // student service end
+
+
+// SMS service start
+service SmsService {
+  rpc GetSmsLogs(GetSmsLogRequest) returns (GetSmsLogResponse);
+  rpc AddSms(AddSmsRequest) returns (common.AbsResponse);
+  rpc DeleteSms(common.DeleteAbsRequest) returns (common.AbsResponse);
+  rpc GetSmsTransactionDetail(common.PageRequest) returns (GetSmsTransactionDetailResponse);
+  rpc GetSmsTemplate(GetSmsTemplateRequest) returns (GetSmsTemplateResponse);
+  rpc SetSmsTemplate(SetSmsTemplateRequest) returns (common.AbsResponse);
+  rpc SendSmsDirectly(SendSmsDirectlyRequest) returns (common.AbsResponse);
+}
+
+message GetSmsLogRequest {
+  common.PageRequest pageRequest=1;
+  string studentId=2;
+}
+message GetSmsLogResponse {
+  repeated SmsLogList datas=1;
+}
+message SmsLogList{
+  string creatorName =1;
+  string smsValue = 2;
+  int32 smsCount=3;
+  string sendDate=4;
+}
+message AddSmsRequest{
+  string companyId=1;
+  int32 smsCount=2;
+  string comment=3;
+  int32 sum=4;
+}
+message GetSmsTransactionDetailResponse{
+  string comment=1;
+  int32 smsCount=2;
+  int32 sum=3;
+}
+message GetSmsTemplateRequest {
+  string smsType =1;
+}
+message GetSmsTemplateResponse{
+  repeated SmsTemplateList datas=1;
+  int32 insufficientBalanceResendCount=2;
+  string smsType=3;
+}
+message SmsTemplateList{
+  string actionName=1;
+  string smsValue=2;
+  int32 smsCount=3;
+  string isActive=4;
+}
+message SetSmsTemplateRequest{
+  string action=1; // delete , update
+  string actionName=2;
+  string smsValue=3;
+  int32 smsCount=4;
+  string isActive=5;
+  int32 insufficientBalanceResendCount=6;
+}
+
+message SendSmsDirectlyRequest{
+  string smsValue=1;
+  int32 smsCount=2;
+  string creatorName=3;
+  string creatorId=4;
+}
+// SMS service end

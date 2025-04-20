@@ -339,6 +339,12 @@ ALTER TABLE "sms_payments" ADD FOREIGN KEY ("company_id") REFERENCES "company" (
 
 ALTER TABLE "sms_template" ADD FOREIGN KEY ("id") REFERENCES "company" ("id");
 
+alter table sms_used
+    add created_by_id uuid;
+
+alter table sms_used
+    add created_by_name varchar;
+
 
 
 

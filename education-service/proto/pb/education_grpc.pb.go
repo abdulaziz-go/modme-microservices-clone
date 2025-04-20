@@ -2602,3 +2602,337 @@ var StudentService_ServiceDesc = grpc.ServiceDesc{
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "education.proto",
 }
+
+const (
+	SmsService_GetSmsLogs_FullMethodName              = "/education.SmsService/GetSmsLogs"
+	SmsService_AddSms_FullMethodName                  = "/education.SmsService/AddSms"
+	SmsService_DeleteSms_FullMethodName               = "/education.SmsService/DeleteSms"
+	SmsService_GetSmsTransactionDetail_FullMethodName = "/education.SmsService/GetSmsTransactionDetail"
+	SmsService_GetSmsTemplate_FullMethodName          = "/education.SmsService/GetSmsTemplate"
+	SmsService_SetSmsTemplate_FullMethodName          = "/education.SmsService/SetSmsTemplate"
+	SmsService_SendSmsDirectly_FullMethodName         = "/education.SmsService/SendSmsDirectly"
+)
+
+// SmsServiceClient is the client API for SmsService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// SMS service start
+type SmsServiceClient interface {
+	GetSmsLogs(ctx context.Context, in *GetSmsLogRequest, opts ...grpc.CallOption) (*GetSmsLogResponse, error)
+	AddSms(ctx context.Context, in *AddSmsRequest, opts ...grpc.CallOption) (*AbsResponse, error)
+	DeleteSms(ctx context.Context, in *DeleteAbsRequest, opts ...grpc.CallOption) (*AbsResponse, error)
+	GetSmsTransactionDetail(ctx context.Context, in *PageRequest, opts ...grpc.CallOption) (*GetSmsTransactionDetailResponse, error)
+	GetSmsTemplate(ctx context.Context, in *GetSmsTemplateRequest, opts ...grpc.CallOption) (*GetSmsTemplateResponse, error)
+	SetSmsTemplate(ctx context.Context, in *SetSmsTemplateRequest, opts ...grpc.CallOption) (*AbsResponse, error)
+	SendSmsDirectly(ctx context.Context, in *SendSmsDirectlyRequest, opts ...grpc.CallOption) (*AbsResponse, error)
+}
+
+type smsServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewSmsServiceClient(cc grpc.ClientConnInterface) SmsServiceClient {
+	return &smsServiceClient{cc}
+}
+
+func (c *smsServiceClient) GetSmsLogs(ctx context.Context, in *GetSmsLogRequest, opts ...grpc.CallOption) (*GetSmsLogResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSmsLogResponse)
+	err := c.cc.Invoke(ctx, SmsService_GetSmsLogs_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *smsServiceClient) AddSms(ctx context.Context, in *AddSmsRequest, opts ...grpc.CallOption) (*AbsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AbsResponse)
+	err := c.cc.Invoke(ctx, SmsService_AddSms_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *smsServiceClient) DeleteSms(ctx context.Context, in *DeleteAbsRequest, opts ...grpc.CallOption) (*AbsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AbsResponse)
+	err := c.cc.Invoke(ctx, SmsService_DeleteSms_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *smsServiceClient) GetSmsTransactionDetail(ctx context.Context, in *PageRequest, opts ...grpc.CallOption) (*GetSmsTransactionDetailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSmsTransactionDetailResponse)
+	err := c.cc.Invoke(ctx, SmsService_GetSmsTransactionDetail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *smsServiceClient) GetSmsTemplate(ctx context.Context, in *GetSmsTemplateRequest, opts ...grpc.CallOption) (*GetSmsTemplateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSmsTemplateResponse)
+	err := c.cc.Invoke(ctx, SmsService_GetSmsTemplate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *smsServiceClient) SetSmsTemplate(ctx context.Context, in *SetSmsTemplateRequest, opts ...grpc.CallOption) (*AbsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AbsResponse)
+	err := c.cc.Invoke(ctx, SmsService_SetSmsTemplate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *smsServiceClient) SendSmsDirectly(ctx context.Context, in *SendSmsDirectlyRequest, opts ...grpc.CallOption) (*AbsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AbsResponse)
+	err := c.cc.Invoke(ctx, SmsService_SendSmsDirectly_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// SmsServiceServer is the server API for SmsService service.
+// All implementations must embed UnimplementedSmsServiceServer
+// for forward compatibility.
+//
+// SMS service start
+type SmsServiceServer interface {
+	GetSmsLogs(context.Context, *GetSmsLogRequest) (*GetSmsLogResponse, error)
+	AddSms(context.Context, *AddSmsRequest) (*AbsResponse, error)
+	DeleteSms(context.Context, *DeleteAbsRequest) (*AbsResponse, error)
+	GetSmsTransactionDetail(context.Context, *PageRequest) (*GetSmsTransactionDetailResponse, error)
+	GetSmsTemplate(context.Context, *GetSmsTemplateRequest) (*GetSmsTemplateResponse, error)
+	SetSmsTemplate(context.Context, *SetSmsTemplateRequest) (*AbsResponse, error)
+	SendSmsDirectly(context.Context, *SendSmsDirectlyRequest) (*AbsResponse, error)
+	mustEmbedUnimplementedSmsServiceServer()
+}
+
+// UnimplementedSmsServiceServer must be embedded to have
+// forward compatible implementations.
+//
+// NOTE: this should be embedded by value instead of pointer to avoid a nil
+// pointer dereference when methods are called.
+type UnimplementedSmsServiceServer struct{}
+
+func (UnimplementedSmsServiceServer) GetSmsLogs(context.Context, *GetSmsLogRequest) (*GetSmsLogResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSmsLogs not implemented")
+}
+func (UnimplementedSmsServiceServer) AddSms(context.Context, *AddSmsRequest) (*AbsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddSms not implemented")
+}
+func (UnimplementedSmsServiceServer) DeleteSms(context.Context, *DeleteAbsRequest) (*AbsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteSms not implemented")
+}
+func (UnimplementedSmsServiceServer) GetSmsTransactionDetail(context.Context, *PageRequest) (*GetSmsTransactionDetailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSmsTransactionDetail not implemented")
+}
+func (UnimplementedSmsServiceServer) GetSmsTemplate(context.Context, *GetSmsTemplateRequest) (*GetSmsTemplateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSmsTemplate not implemented")
+}
+func (UnimplementedSmsServiceServer) SetSmsTemplate(context.Context, *SetSmsTemplateRequest) (*AbsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetSmsTemplate not implemented")
+}
+func (UnimplementedSmsServiceServer) SendSmsDirectly(context.Context, *SendSmsDirectlyRequest) (*AbsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendSmsDirectly not implemented")
+}
+func (UnimplementedSmsServiceServer) mustEmbedUnimplementedSmsServiceServer() {}
+func (UnimplementedSmsServiceServer) testEmbeddedByValue()                    {}
+
+// UnsafeSmsServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to SmsServiceServer will
+// result in compilation errors.
+type UnsafeSmsServiceServer interface {
+	mustEmbedUnimplementedSmsServiceServer()
+}
+
+func RegisterSmsServiceServer(s grpc.ServiceRegistrar, srv SmsServiceServer) {
+	// If the following call pancis, it indicates UnimplementedSmsServiceServer was
+	// embedded by pointer and is nil.  This will cause panics if an
+	// unimplemented method is ever invoked, so we test this at initialization
+	// time to prevent it from happening at runtime later due to I/O.
+	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
+		t.testEmbeddedByValue()
+	}
+	s.RegisterService(&SmsService_ServiceDesc, srv)
+}
+
+func _SmsService_GetSmsLogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSmsLogRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SmsServiceServer).GetSmsLogs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SmsService_GetSmsLogs_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SmsServiceServer).GetSmsLogs(ctx, req.(*GetSmsLogRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SmsService_AddSms_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddSmsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SmsServiceServer).AddSms(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SmsService_AddSms_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SmsServiceServer).AddSms(ctx, req.(*AddSmsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SmsService_DeleteSms_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteAbsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SmsServiceServer).DeleteSms(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SmsService_DeleteSms_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SmsServiceServer).DeleteSms(ctx, req.(*DeleteAbsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SmsService_GetSmsTransactionDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SmsServiceServer).GetSmsTransactionDetail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SmsService_GetSmsTransactionDetail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SmsServiceServer).GetSmsTransactionDetail(ctx, req.(*PageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SmsService_GetSmsTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSmsTemplateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SmsServiceServer).GetSmsTemplate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SmsService_GetSmsTemplate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SmsServiceServer).GetSmsTemplate(ctx, req.(*GetSmsTemplateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SmsService_SetSmsTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetSmsTemplateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SmsServiceServer).SetSmsTemplate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SmsService_SetSmsTemplate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SmsServiceServer).SetSmsTemplate(ctx, req.(*SetSmsTemplateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SmsService_SendSmsDirectly_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendSmsDirectlyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SmsServiceServer).SendSmsDirectly(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SmsService_SendSmsDirectly_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SmsServiceServer).SendSmsDirectly(ctx, req.(*SendSmsDirectlyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// SmsService_ServiceDesc is the grpc.ServiceDesc for SmsService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var SmsService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "education.SmsService",
+	HandlerType: (*SmsServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetSmsLogs",
+			Handler:    _SmsService_GetSmsLogs_Handler,
+		},
+		{
+			MethodName: "AddSms",
+			Handler:    _SmsService_AddSms_Handler,
+		},
+		{
+			MethodName: "DeleteSms",
+			Handler:    _SmsService_DeleteSms_Handler,
+		},
+		{
+			MethodName: "GetSmsTransactionDetail",
+			Handler:    _SmsService_GetSmsTransactionDetail_Handler,
+		},
+		{
+			MethodName: "GetSmsTemplate",
+			Handler:    _SmsService_GetSmsTemplate_Handler,
+		},
+		{
+			MethodName: "SetSmsTemplate",
+			Handler:    _SmsService_SetSmsTemplate_Handler,
+		},
+		{
+			MethodName: "SendSmsDirectly",
+			Handler:    _SmsService_SendSmsDirectly_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "education.proto",
+}
