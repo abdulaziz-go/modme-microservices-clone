@@ -7019,6 +7019,7 @@ type SetSmsTemplateRequest struct {
 	IsActive                       string                 `protobuf:"bytes,5,opt,name=isActive,proto3" json:"isActive,omitempty"`
 	InsufficientBalanceResendCount int32                  `protobuf:"varint,6,opt,name=insufficientBalanceResendCount,proto3" json:"insufficientBalanceResendCount,omitempty"`
 	NewSmsValue                    string                 `protobuf:"bytes,7,opt,name=newSmsValue,proto3" json:"newSmsValue,omitempty"`
+	ActionType                     string                 `protobuf:"bytes,8,opt,name=actionType,proto3" json:"actionType,omitempty"`
 	unknownFields                  protoimpl.UnknownFields
 	sizeCache                      protoimpl.SizeCache
 }
@@ -7098,6 +7099,13 @@ func (x *SetSmsTemplateRequest) GetInsufficientBalanceResendCount() int32 {
 func (x *SetSmsTemplateRequest) GetNewSmsValue() string {
 	if x != nil {
 		return x.NewSmsValue
+	}
+	return ""
+}
+
+func (x *SetSmsTemplateRequest) GetActionType() string {
+	if x != nil {
+		return x.ActionType
 	}
 	return ""
 }
@@ -7827,7 +7835,7 @@ const file_education_proto_rawDesc = "" +
 	"actionName\x12\x1a\n" +
 	"\bsmsValue\x18\x02 \x01(\tR\bsmsValue\x12\x1a\n" +
 	"\bsmsCount\x18\x03 \x01(\x05R\bsmsCount\x12\x1a\n" +
-	"\bisActive\x18\x04 \x01(\tR\bisActive\"\x8d\x02\n" +
+	"\bisActive\x18\x04 \x01(\tR\bisActive\"\xad\x02\n" +
 	"\x15SetSmsTemplateRequest\x12\x16\n" +
 	"\x06action\x18\x01 \x01(\tR\x06action\x12\x1e\n" +
 	"\n" +
@@ -7837,7 +7845,10 @@ const file_education_proto_rawDesc = "" +
 	"\bsmsCount\x18\x04 \x01(\x05R\bsmsCount\x12\x1a\n" +
 	"\bisActive\x18\x05 \x01(\tR\bisActive\x12F\n" +
 	"\x1einsufficientBalanceResendCount\x18\x06 \x01(\x05R\x1einsufficientBalanceResendCount\x12 \n" +
-	"\vnewSmsValue\x18\a \x01(\tR\vnewSmsValue\"\xae\x01\n" +
+	"\vnewSmsValue\x18\a \x01(\tR\vnewSmsValue\x12\x1e\n" +
+	"\n" +
+	"actionType\x18\b \x01(\tR\n" +
+	"actionType\"\xae\x01\n" +
 	"\x16SendSmsDirectlyRequest\x12\x1a\n" +
 	"\bsmsValue\x18\x01 \x01(\tR\bsmsValue\x12\x1a\n" +
 	"\bsmsCount\x18\x02 \x01(\x05R\bsmsCount\x12 \n" +

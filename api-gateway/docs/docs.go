@@ -8113,6 +8113,9 @@ const docTemplate = `{
                 "actionName": {
                     "type": "string"
                 },
+                "actionType": {
+                    "type": "string"
+                },
                 "insufficientBalanceResendCount": {
                     "type": "integer"
                 },
