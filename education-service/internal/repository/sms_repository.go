@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"education-service/proto/pb"
+	"fmt"
 )
 
 type SmsRepository struct {
@@ -155,6 +156,78 @@ func (r SmsRepository) GetSmsTransactionDetail(page int32, size int32, companyId
 	}, nil
 }
 
-func (r SmsRepository) GetSmsTemplate(smsType string) (*pb.GetSmsTemplateResponse, error) {
-	return nil, nil
+func (r SmsRepository) GetSmsTemplate(smsType string, companyId string) (*pb.GetSmsTemplateResponse, error) {
+	var (
+		rows *sql.Rows
+		err  error
+	)
+
+	if smsType == "ACTION" {
+		rows, err = r.db.Query(`
+			SELECT action_type, array_to_string(texts, ' '), sms_count, is_active, insufficient_balance_send_count
+			FROM sms_template
+			WHERE company_id = $1 AND sms_template_type = 'ACTION'
+		`, companyId)
+		if err != nil {
+			return nil, err
+		}
+		defer rows.Close()
+
+		var (
+			datas                          []*pb.SmsTemplateList
+			insufficientBalanceResendCount int32
+		)
+
+		for rows.Next() {
+			var (
+				item        pb.SmsTemplateList
+				isActive    bool
+				resendCount int32
+				actionType  string
+			)
+			err := rows.Scan(&actionType, &item.SmsValue, &item.SmsCount, &isActive, &resendCount)
+			if err != nil {
+				return nil, err
+			}
+			item.ActionName = actionType
+			item.IsActive = fmt.Sprintf("%v", isActive)
+
+			if actionType == "INSUFFICIENT_BALANCE_ALERT" {
+				insufficientBalanceResendCount = resendCount
+			}
+
+			datas = append(datas, &item)
+		}
+
+		return &pb.GetSmsTemplateResponse{
+			Datas:                          datas,
+			InsufficientBalanceResendCount: insufficientBalanceResendCount,
+			SmsType:                        smsType,
+		}, nil
+	}
+
+	rows, err = r.db.Query(`
+		SELECT array_to_string(texts, ' '), sms_count, created_at
+		FROM sms_template
+		WHERE company_id = $1 AND sms_template_type = 'TEMPLATE'
+	`, companyId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var datas []*pb.SmsTemplateList
+	for rows.Next() {
+		var item pb.SmsTemplateList
+		err := rows.Scan(&item.SmsValue, &item.SmsCount, &item.ActionName)
+		if err != nil {
+			return nil, err
+		}
+		datas = append(datas, &item)
+	}
+
+	return &pb.GetSmsTemplateResponse{
+		Datas:   datas,
+		SmsType: smsType,
+	}, nil
 }
