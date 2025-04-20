@@ -3,6 +3,7 @@ package handlers
 import (
 	"api-gateway/grpc/proto/pb"
 	"api-gateway/internal/etc"
+	"api-gateway/internal/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -203,6 +204,13 @@ func SendSmsDirectly(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	userDetail, err := utils.GetUserFromContext(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	req.CreatorName = userDetail.Name
+	req.CreatorId = userDetail.Id
 	response, err := educationClient.SendSmsDirectly(ctxR, &req)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
