@@ -784,7 +784,7 @@ message SmsTemplateList{
 }
 message SetSmsTemplateRequest{
   string action=1; // delete , update
-  string actionName=2;
+  string actionName=2; // template , action
   string smsValue=3;
   int32 smsCount=4;
   string isActive=5;

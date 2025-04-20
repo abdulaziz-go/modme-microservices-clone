@@ -248,9 +248,20 @@ func (r SmsRepository) SendSmsDirectly(req *pb.SendSmsDirectlyRequest, companyId
 		charsPerSms = 160
 	}
 
-	smsCount := int32(len([]rune(req.SmsValue)) / charsPerSms)
-	if len([]rune(req.SmsValue))%charsPerSms != 0 {
+	runes := []rune(req.SmsValue)
+	totalLen := len(runes)
+	smsCount := int32(totalLen / charsPerSms)
+	if totalLen%charsPerSms != 0 {
 		smsCount++
+	}
+
+	var textParts []string
+	for i := 0; i < totalLen; i += charsPerSms {
+		end := i + charsPerSms
+		if end > totalLen {
+			end = totalLen
+		}
+		textParts = append(textParts, string(runes[i:end]))
 	}
 
 	var phoneNumber string
@@ -271,8 +282,8 @@ func (r SmsRepository) SendSmsDirectly(req *pb.SendSmsDirectlyRequest, companyId
 
 	_, err = tx.Exec(`
 		INSERT INTO sms_used (id, company_id, texts, sms_count, created_by_id, created_by_name, sms_used_type, student_id)
-		VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, 'BY_SELF', $6)
-	`, companyId, req.SmsValue, smsCount, req.CreatorId, req.CreatorName, req.StudentId)
+		VALUES (gen_random_uuid(), $1, $2::text[], $3, $4, $5, 'BY_SELF', $6)
+	`, companyId, textParts, smsCount, req.CreatorId, req.CreatorName, req.StudentId)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert sms_used: %w", err)
 	}
@@ -289,5 +300,102 @@ func (r SmsRepository) SendSmsDirectly(req *pb.SendSmsDirectlyRequest, companyId
 	return &pb.AbsResponse{
 		Status:  200,
 		Message: "ok",
+	}, nil
+}
+
+func (r SmsRepository) SetSmsTemplate(req *pb.SetSmsTemplateRequest, companyId string) (*pb.AbsResponse, error) {
+	var err error
+
+	isCyrillic := false
+	for _, r := range req.SmsValue {
+		if r >= 0x0400 && r <= 0x04FF {
+			isCyrillic = true
+			break
+		}
+	}
+
+	var charsPerSms int
+	if isCyrillic {
+		charsPerSms = 70
+	} else {
+		charsPerSms = 160
+	}
+
+	runes := []rune(req.SmsValue)
+	totalLen := len(runes)
+	req.SmsCount = int32(totalLen / charsPerSms)
+	if totalLen%charsPerSms != 0 {
+		req.SmsCount++
+	}
+
+	var textParts []string
+	for i := 0; i < totalLen; i += charsPerSms {
+		end := i + charsPerSms
+		if end > totalLen {
+			end = totalLen
+		}
+		textParts = append(textParts, string(runes[i:end]))
+	}
+
+	switch req.Action {
+	case "delete":
+		if req.ActionName == "ACTION" {
+			_, err = r.db.Exec(`
+				DELETE FROM sms_template
+				WHERE company_id = $1 AND sms_template_type = 'ACTION' AND action_type = $2
+			`, companyId, req.SmsValue)
+		} else {
+			_, err = r.db.Exec(`
+				DELETE FROM sms_template
+				WHERE company_id = $1 AND sms_template_type = 'TEMPLATE' AND array_to_string(texts, ' ') = $2
+			`, companyId, req.SmsValue)
+		}
+	case "update":
+		isActive := false
+		if req.IsActive == "true" {
+			isActive = true
+		}
+
+		if req.ActionName == "ACTION" {
+			_, err = r.db.Exec(`
+				UPDATE sms_template
+				SET texts = $1::text[], sms_count = $2, is_active = $3, insufficient_balance_send_count = $4
+				WHERE company_id = $5 AND sms_template_type = 'ACTION' AND action_type = $6
+			`, textParts, req.SmsCount, isActive, req.InsufficientBalanceResendCount, companyId, req.SmsValue)
+		} else {
+			_, err = r.db.Exec(`
+				UPDATE sms_template
+				SET texts = $1::text[], sms_count = $2, is_active = $3
+				WHERE company_id = $4 AND sms_template_type = 'TEMPLATE' AND array_to_string(texts, ' ') = $5
+			`, textParts, req.SmsCount, isActive, companyId, req.SmsValue)
+		}
+	case "create":
+		isActive := false
+		if req.IsActive == "true" {
+			isActive = true
+		}
+
+		if req.ActionName == "ACTION" {
+			_, err = r.db.Exec(`
+				INSERT INTO sms_template (company_id, texts, sms_count, is_active, insufficient_balance_send_count, sms_template_type, action_type)
+				VALUES ($1, $2::text[], $3, $4, $5, 'ACTION', $6)
+			`, companyId, textParts, req.SmsCount, isActive, req.InsufficientBalanceResendCount, req.SmsValue)
+		} else {
+			_, err = r.db.Exec(`
+				INSERT INTO sms_template (company_id, texts, sms_count, is_active, sms_template_type)
+				VALUES ($1, $2::text[], $3, $4, 'TEMPLATE')
+			`, companyId, textParts, req.SmsCount, isActive)
+		}
+	default:
+		return nil, fmt.Errorf("unknown action: %s", req.Action)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.AbsResponse{
+		Status:  200,
+		Message: "template updated",
 	}, nil
 }

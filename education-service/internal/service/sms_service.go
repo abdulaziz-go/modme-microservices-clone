@@ -47,7 +47,11 @@ func (s *SmsService) GetSmsTemplate(ctx context.Context, req *pb.GetSmsTemplateR
 	return s.smsRepo.GetSmsTemplate(req.SmsType, companyId)
 }
 func (s *SmsService) SetSmsTemplate(ctx context.Context, req *pb.SetSmsTemplateRequest) (*pb.AbsResponse, error) {
-	return nil, nil
+	companyId := utils.GetCompanyId(ctx)
+	if companyId == "" {
+		return nil, status.Error(codes.FailedPrecondition, "Company ID is required")
+	}
+	return s.smsRepo.SetSmsTemplate(req, companyId)
 }
 func (s *SmsService) SendSmsDirectly(ctx context.Context, req *pb.SendSmsDirectlyRequest) (*pb.AbsResponse, error) {
 	companyId := utils.GetCompanyId(ctx)
