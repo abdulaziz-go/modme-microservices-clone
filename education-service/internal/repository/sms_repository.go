@@ -265,7 +265,7 @@ func (r SmsRepository) SendSmsDirectly(req *pb.SendSmsDirectlyRequest, companyId
 	}
 
 	var phoneNumber string
-	err := r.db.QueryRow(`SELECT phone_number FROM students WHERE id = $1`, req.StudentId).Scan(&phoneNumber)
+	err := r.db.QueryRow(`SELECT phone FROM students WHERE id = $1`, req.StudentId).Scan(&phoneNumber)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get student phone number: %w", err)
 	}
