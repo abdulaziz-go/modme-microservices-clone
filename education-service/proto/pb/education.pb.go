@@ -7100,6 +7100,7 @@ type SendSmsDirectlyRequest struct {
 	SmsCount      int32                  `protobuf:"varint,2,opt,name=smsCount,proto3" json:"smsCount,omitempty"`
 	CreatorName   string                 `protobuf:"bytes,3,opt,name=creatorName,proto3" json:"creatorName,omitempty"`
 	CreatorId     string                 `protobuf:"bytes,4,opt,name=creatorId,proto3" json:"creatorId,omitempty"`
+	StudentId     string                 `protobuf:"bytes,5,opt,name=studentId,proto3" json:"studentId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -7158,6 +7159,13 @@ func (x *SendSmsDirectlyRequest) GetCreatorName() string {
 func (x *SendSmsDirectlyRequest) GetCreatorId() string {
 	if x != nil {
 		return x.CreatorId
+	}
+	return ""
+}
+
+func (x *SendSmsDirectlyRequest) GetStudentId() string {
+	if x != nil {
+		return x.StudentId
 	}
 	return ""
 }
@@ -7820,12 +7828,13 @@ const file_education_proto_rawDesc = "" +
 	"\bsmsValue\x18\x03 \x01(\tR\bsmsValue\x12\x1a\n" +
 	"\bsmsCount\x18\x04 \x01(\x05R\bsmsCount\x12\x1a\n" +
 	"\bisActive\x18\x05 \x01(\tR\bisActive\x12F\n" +
-	"\x1einsufficientBalanceResendCount\x18\x06 \x01(\x05R\x1einsufficientBalanceResendCount\"\x90\x01\n" +
+	"\x1einsufficientBalanceResendCount\x18\x06 \x01(\x05R\x1einsufficientBalanceResendCount\"\xae\x01\n" +
 	"\x16SendSmsDirectlyRequest\x12\x1a\n" +
 	"\bsmsValue\x18\x01 \x01(\tR\bsmsValue\x12\x1a\n" +
 	"\bsmsCount\x18\x02 \x01(\x05R\bsmsCount\x12 \n" +
 	"\vcreatorName\x18\x03 \x01(\tR\vcreatorName\x12\x1c\n" +
-	"\tcreatorId\x18\x04 \x01(\tR\tcreatorId2\xe9\x02\n" +
+	"\tcreatorId\x18\x04 \x01(\tR\tcreatorId\x12\x1c\n" +
+	"\tstudentId\x18\x05 \x01(\tR\tstudentId2\xe9\x02\n" +
 	"\x15CompanyFinanceService\x12@\n" +
 	"\x06Create\x12\x19.education.CompanyFinance\x1a\x19.education.CompanyFinance\"\x00\x129\n" +
 	"\x06Delete\x12\x18.common.DeleteAbsRequest\x1a\x13.common.AbsResponse\"\x00\x12>\n" +

@@ -1571,6 +1571,8 @@ definitions:
         type: integer
       smsValue:
         type: string
+      studentId:
+        type: string
     type: object
   pb.SetAttendanceRequest:
     properties:

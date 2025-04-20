@@ -796,5 +796,6 @@ message SendSmsDirectlyRequest{
   int32 smsCount=2;
   string creatorName=3;
   string creatorId=4;
+  string studentId=5;
 }
 // SMS service end

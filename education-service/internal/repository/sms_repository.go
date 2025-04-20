@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"education-service/internal/utils"
 	"education-service/proto/pb"
 	"fmt"
 )
@@ -229,5 +230,65 @@ func (r SmsRepository) GetSmsTemplate(smsType string, companyId string) (*pb.Get
 	return &pb.GetSmsTemplateResponse{
 		Datas:   datas,
 		SmsType: smsType,
+	}, nil
+}
+
+func (r SmsRepository) SendSmsDirectly(req *pb.SendSmsDirectlyRequest, companyId string) (*pb.AbsResponse, error) {
+	isCyrillic := false
+	for _, r := range req.SmsValue {
+		if r >= 0x0400 && r <= 0x04FF {
+			isCyrillic = true
+			break
+		}
+	}
+
+	var charsPerSms int
+	if isCyrillic {
+		charsPerSms = 70
+	} else {
+		charsPerSms = 160
+	}
+
+	smsCount := int32(len([]rune(req.SmsValue)) / charsPerSms)
+	if len([]rune(req.SmsValue))%charsPerSms != 0 {
+		smsCount++
+	}
+
+	var phoneNumber string
+	err := r.db.QueryRow(`SELECT phone_number FROM students WHERE id = $1`, req.StudentId).Scan(&phoneNumber)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get student phone number: %w", err)
+	}
+
+	tx, err := r.db.Begin()
+	if err != nil {
+		return nil, fmt.Errorf("failed to begin transaction: %w", err)
+	}
+	defer func() {
+		if err != nil {
+			_ = tx.Rollback()
+		}
+	}()
+
+	_, err = tx.Exec(`
+		INSERT INTO sms_used (id, company_id, texts, sms_count, created_by_id, created_by_name, sms_used_type, student_id)
+		VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, 'BY_SELF', $6)
+	`, companyId, req.SmsValue, smsCount, req.CreatorId, req.CreatorName, req.StudentId)
+	if err != nil {
+		return nil, fmt.Errorf("failed to insert sms_used: %w", err)
+	}
+
+	if sendErr := utils.SendSMS(phoneNumber, req.SmsValue); sendErr != nil {
+		_ = tx.Rollback()
+		return nil, fmt.Errorf("failed to send sms: %w", sendErr)
+	}
+
+	if err = tx.Commit(); err != nil {
+		return nil, fmt.Errorf("failed to commit transaction: %w", err)
+	}
+
+	return &pb.AbsResponse{
+		Status:  200,
+		Message: "ok",
 	}, nil
 }

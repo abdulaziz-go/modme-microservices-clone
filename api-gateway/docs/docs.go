@@ -8039,6 +8039,9 @@ const docTemplate = `{
                 },
                 "smsValue": {
                     "type": "string"
+                },
+                "studentId": {
+                    "type": "string"
                 }
             }
         },

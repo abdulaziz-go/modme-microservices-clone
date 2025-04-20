@@ -8029,6 +8029,9 @@
                 },
                 "smsValue": {
                     "type": "string"
+                },
+                "studentId": {
+                    "type": "string"
                 }
             }
         },
