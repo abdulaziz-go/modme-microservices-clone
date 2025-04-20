@@ -2,7 +2,6 @@ package repository
 
 import (
 	"database/sql"
-	"education-service/internal/utils"
 	"education-service/proto/pb"
 	"fmt"
 )
@@ -278,10 +277,10 @@ func (r SmsRepository) SendSmsDirectly(req *pb.SendSmsDirectlyRequest, companyId
 		return nil, fmt.Errorf("failed to insert sms_used: %w", err)
 	}
 
-	if sendErr := utils.SendSMS(phoneNumber, req.SmsValue); sendErr != nil {
-		_ = tx.Rollback()
-		return nil, fmt.Errorf("failed to send sms: %w", sendErr)
-	}
+	//if sendErr := utils.SendSMS(phoneNumber, req.SmsValue); sendErr != nil {
+	//	_ = tx.Rollback()
+	//	return nil, fmt.Errorf("failed to send sms: %w", sendErr)
+	//}
 
 	if err = tx.Commit(); err != nil {
 		return nil, fmt.Errorf("failed to commit transaction: %w", err)
