@@ -28,15 +28,22 @@ func (s *SmsService) GetSmsLogs(ctx context.Context, req *pb.GetSmsLogRequest) (
 
 	return s.smsRepo.GetSmsLog(companyId, req.StudentId, req.PageRequest)
 }
+
 func (s *SmsService) AddSms(ctx context.Context, req *pb.AddSmsRequest) (*pb.AbsResponse, error) {
+	return nil, nil
 }
 func (s *SmsService) DeleteSms(ctx context.Context, req *pb.DeleteAbsRequest) (*pb.AbsResponse, error) {
+	return nil, nil
 }
 func (s *SmsService) GetSmsTransactionDetail(ctx context.Context, req *pb.PageRequest) (*pb.GetSmsTransactionDetailResponse, error) {
+	return nil, nil
 }
 func (s *SmsService) GetSmsTemplate(ctx context.Context, req *pb.GetSmsTemplateRequest) (*pb.GetSmsTemplateResponse, error) {
+	return nil, nil
 }
 func (s *SmsService) SetSmsTemplate(ctx context.Context, req *pb.SetSmsTemplateRequest) (*pb.AbsResponse, error) {
+	return nil, nil
 }
 func (s *SmsService) SendSmsDirectly(ctx context.Context, req *pb.SendSmsDirectlyRequest) (*pb.AbsResponse, error) {
+	return nil, nil
 }
