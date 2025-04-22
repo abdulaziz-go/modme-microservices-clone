@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"education-service/internal/utils"
 	"education-service/proto/pb"
 	"fmt"
 	"github.com/lib/pq"
@@ -305,6 +306,11 @@ func (r SmsRepository) SendSmsDirectly(req *pb.SendSmsDirectlyRequest, companyId
 	_, err = tx.Exec(`UPDATE company SET sms_balance = sms_balance - $1 WHERE id = $2`, smsCount, companyId)
 	if err != nil {
 		return nil, fmt.Errorf("failed to update sms_balance: %w", err)
+	}
+
+	if sendErr := utils.SendSMS(phoneNumber, req.SmsValue); sendErr != nil {
+		_ = tx.Rollback()
+		return nil, fmt.Errorf("failed to send sms: %w", sendErr)
 	}
 
 	if err = tx.Commit(); err != nil {

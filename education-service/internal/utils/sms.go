@@ -7,8 +7,8 @@ import (
 
 func SendSMS(phoneNumber, message string) error {
 	eskizClient, err := eskizuz.GetToken(&eskizuz.Auth{
-		Email:    "actual_email@example.com",
-		Password: "actual_password",
+		Email:    "abdulla.ergashev.2020@mail.ru",
+		Password: "V16Q4KCD008jNLmgQ2zcnxxT5tgNM085BJShe17a",
 	})
 	if err != nil {
 		return fmt.Errorf("authentication failed: %v", err)
