@@ -68,7 +68,7 @@ func (s *StudentService) AddToGroup(ctx context.Context, req *pb.AddToGroupReque
 	if companyId == "" {
 		return nil, status.Error(codes.Aborted, "error while getting company from context")
 	}
-	if err := s.repo.AddToGroup(companyId, req.GroupId, req.StudentIds, req.CreatedDate, req.CreatedBy); err != nil {
+	if err := s.repo.AddToGroup(ctx, companyId, req.GroupId, req.StudentIds, req.CreatedDate, req.CreatedBy); err != nil {
 		return nil, err
 	}
 	return &pb.AbsResponse{

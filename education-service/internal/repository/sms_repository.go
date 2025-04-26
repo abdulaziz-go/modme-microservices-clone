@@ -62,7 +62,6 @@ func (r SmsRepository) GetSmsLog(companyId string, studentId string, pageReq *pb
 }
 
 func (r SmsRepository) AddSms(req *pb.AddSmsRequest) (*pb.AbsResponse, error) {
-
 	tx, err := r.db.Begin()
 	if err != nil {
 		return nil, err

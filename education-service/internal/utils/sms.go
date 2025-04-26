@@ -2,12 +2,15 @@ package utils
 
 import (
 	"bytes"
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"io"
 	"mime/multipart"
 	"net/http"
 	"strings"
+
+	"github.com/lib/pq"
 )
 
 var smsToken string
@@ -82,4 +85,71 @@ func SendSMS(phoneNumber, message string) error {
 
 	fmt.Println("SMS sent:", string(body))
 	return nil
+}
+
+func GetSmsFormatted(sms, teacher string, db *sql.DB, studentID, groupID string) (string, int) {
+	var studentName string
+	err := db.QueryRow("SELECT name FROM students WHERE id = $1", studentID).Scan(&studentName)
+	if err != nil {
+		fmt.Println("Error fetching student:", err)
+		studentName = "(Student)"
+	}
+
+	var groupName, startTime string
+	var days []string
+	var roomID, companyID int
+	err = db.QueryRow(`SELECT name, start_time, days, room_id, company_id FROM groups WHERE id = $1`, groupID).Scan(&groupName, &startTime, pq.Array(&days), &roomID, &companyID)
+	if err != nil {
+		fmt.Println("Error fetching group:", err)
+		groupName = "(Group)"
+		startTime = "(Time)"
+	}
+
+	var roomName string
+	err = db.QueryRow("SELECT title FROM rooms WHERE id = $1", roomID).Scan(&roomName)
+	if err != nil {
+		fmt.Println("Error fetching room:", err)
+		roomName = "(Room)"
+	}
+
+	var companyName string
+	err = db.QueryRow("SELECT title FROM company WHERE id = $1", companyID).Scan(&companyName)
+	if err != nil {
+		fmt.Println("Error fetching company:", err)
+		companyName = "(LC)"
+	}
+
+	daysStr := strings.Join(days, ", ")
+
+	replacements := map[string]string{
+		"(STUDENT)": studentName,
+		"(GROUP)":   groupName,
+		"(TIME)":    startTime,
+		"(LC)":      companyName,
+		"(TEACHER)": teacher,
+		"(DAYS)":    daysStr,
+		"(ROOM)":    roomName,
+	}
+
+	for key, value := range replacements {
+		sms = strings.ReplaceAll(sms, key, value)
+	}
+	length := len([]rune(sms))
+
+	isCyrillic := false
+	for _, r := range sms {
+		if r >= 0x0400 && r <= 0x04FF {
+			isCyrillic = true
+			break
+		}
+	}
+
+	var smsCount int
+	if isCyrillic {
+		smsCount = (length + 69) / 70
+	} else {
+		smsCount = (length + 159) / 160
+	}
+
+	return sms, smsCount
 }

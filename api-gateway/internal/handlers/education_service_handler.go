@@ -556,8 +556,12 @@ func AddStudentToGroup(ctx *gin.Context) {
 		utils.RespondError(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
-	req.CreatedBy = "c1d6503f-31dc-4f99-b61f-2e4ebc7a7639"
-	fmt.Println(req.StudentIds)
+	user, err := utils.GetUserFromContext(ctx)
+	if err != nil {
+		utils.RespondError(ctx, http.StatusUnauthorized, err.Error())
+		return
+	}
+	req.CreatedBy = user.Id
 	response, err := educationClient.AddStudentToGroup(ctxR, &req)
 	if err != nil {
 		utils.RespondError(ctx, http.StatusInternalServerError, err.Error())
