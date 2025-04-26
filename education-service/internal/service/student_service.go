@@ -151,7 +151,7 @@ func (s *StudentService) ChangeUserBalanceHistory(ctx context.Context, req *pb.C
 	if companyId == "" {
 		return nil, status.Error(codes.Aborted, "error while getting company from context")
 	}
-	return s.repo.ChangeUserBalanceHistory(companyId, req.Comment, req.GroupId, req.CreatedBy, req.CreatedByName, req.GivenDate, req.Amount, req.PaymentType, req.StudentId)
+	return s.repo.ChangeUserBalanceHistory(ctx, companyId, req.Comment, req.GroupId, req.CreatedBy, req.CreatedByName, req.GivenDate, req.Amount, req.PaymentType, req.StudentId)
 }
 func (s *StudentService) ChangeUserBalanceHistoryByDebit(ctx context.Context, req *pb.ChangeUserBalanceHistoryByDebitRequest) (*pb.AbsResponse, error) {
 	companyId := utils.GetCompanyId(ctx)

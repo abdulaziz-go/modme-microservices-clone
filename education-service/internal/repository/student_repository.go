@@ -726,7 +726,7 @@ func (r *StudentRepository) GetStudentsByGroupId(companyId string, groupId strin
 
 	return &pb.GetStudentsByGroupIdResponse{Students: students}, nil
 }
-func (r *StudentRepository) ChangeUserBalanceHistory(companyId string, comment string, groupId string, createdById string, createdByName string, givenDate string, amount string, paymentType string, studentId string) (*pb.AbsResponse, error) {
+func (r *StudentRepository) ChangeUserBalanceHistory(ctx context.Context, companyId string, comment string, groupId string, createdById string, createdByName string, givenDate string, amount string, paymentType string, studentId string) (*pb.AbsResponse, error) {
 	tx, err := r.db.Begin()
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "Failed to begin transaction: %v", err)
@@ -777,6 +777,9 @@ func (r *StudentRepository) ChangeUserBalanceHistory(companyId string, comment s
 	err = r.BalanceHistoryMaker(companyId, tx, currentBalance, newBalance, studentId, comment, groupId, groupName, createdById, createdByName, givenDate, amount, paymentType)
 	if err != nil {
 		return nil, status.Errorf(codes.Canceled, err.Error())
+	}
+	if paymentType == "ADD" {
+		r.SendSmsPaymentSuccessful(ctx, studentId, groupId, companyId)
 	}
 	return &pb.AbsResponse{
 		Status:  http.StatusOK,
@@ -1113,6 +1116,111 @@ func (r *StudentRepository) SendSmsReasonAddToGroup(ctx context.Context, student
 
 	// Fetch SMS template
 	err := r.db.QueryRow(`SELECT id, texts, action_type, sms_template_type, is_active FROM sms_template WHERE company_id=$1 AND action_type='JOINED_GROUP_ALERT' AND sms_template_type='ACTION' AND is_active=true`, companyId).
+		Scan(&smsTemplate.ID, pq.Array(&texts), &smsTemplate.ActionType, &smsTemplate.SmsTemplateType, &smsTemplate.IsActive)
+	if err != nil {
+		fmt.Println("error fetching sms template:", err)
+		return
+	}
+	fmt.Println("Fetched SMS template successfully")
+
+	// Fetch initial SMS balance
+	err = r.db.QueryRow(`SELECT sms_balance FROM company WHERE id=$1`, companyId).Scan(&smsBalance)
+	if err != nil {
+		fmt.Println("error fetching SMS balance:", err)
+		return
+	}
+	fmt.Printf("Initial SMS balance: %d\n", smsBalance)
+	if smsBalance < 1 {
+		fmt.Println("not enough SMS balance")
+		return
+	}
+
+	ctx, cancelFunc := utils.NewTimoutContext(ctx, companyId)
+	defer cancelFunc()
+
+	// Get teacher and phone number
+	if err = r.db.QueryRow(`SELECT teacher_id FROM groups where id=$1`, groupId).Scan(&teacherId); err == nil {
+		teacherName, _ = r.userClient.GetTeacherById(ctx, teacherId)
+	}
+	err = r.db.QueryRow(`SELECT phone FROM students where id=$1`, studentId).Scan(&phoneNumber)
+	if err != nil {
+		fmt.Println("error fetching phone number:", err)
+		return
+	}
+	fmt.Println("Teacher and phone fetched successfully")
+
+	// Start transaction
+	tx, err := r.db.Begin()
+	if err != nil {
+		fmt.Println("error starting transaction:", err)
+		return
+	}
+	fmt.Println("Transaction started")
+
+	// Re-check SMS balance inside transaction
+	err = tx.QueryRow(`SELECT sms_balance FROM company WHERE id=$1`, companyId).Scan(&smsBalance)
+	if err != nil {
+		fmt.Println("error fetching SMS balance (transaction):", err)
+		tx.Rollback()
+		return
+	}
+	fmt.Printf("SMS balance inside transaction: %d\n", smsBalance)
+	if smsBalance < 1 {
+		fmt.Println("not enough SMS balance (transaction)")
+		tx.Rollback()
+		return
+	}
+
+	// Format SMS text
+	smsText, usedSmsCount := utils.GetSmsFormatted(strings.Join(texts, " "), teacherName, r.db, studentId, groupId)
+	fmt.Printf("SMS formatted successfully: %s\n", smsText)
+
+	// Insert into sms_used
+	_, err = tx.Exec(`INSERT INTO sms_used(id, company_id, sms_template_id, texts, sms_count, student_id, sms_used_type, created_at, created_by_id, created_by_name) 
+              VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+		uuid.New(), companyId, smsTemplate.ID, pq.Array(texts), usedSmsCount, studentId, "BY_TEMPLATE", time.Now(), "00000000-0000-0000-0000-000000000000", "system")
+	if err != nil {
+		fmt.Println("error inserting into sms_used:", err)
+		tx.Rollback()
+		return
+	}
+	fmt.Println("Inserted into sms_used successfully")
+
+	// Update company balance
+	_, err = tx.Exec(`UPDATE company SET sms_balance=sms_balance-$1 WHERE id=$2`, usedSmsCount, companyId)
+	if err != nil {
+		fmt.Println("error updating company balance:", err)
+		tx.Rollback()
+		return
+	}
+	fmt.Println("Company balance updated successfully")
+
+	// Send SMS after transaction but before commit
+	err = utils.SendSMS(phoneNumber, smsText)
+	if err != nil {
+		fmt.Println("error sending SMS after transaction:", err)
+		tx.Rollback()
+		return
+	}
+	fmt.Println("SMS sent successfully")
+
+	// Commit transaction
+	if err := tx.Commit(); err != nil {
+		fmt.Println("error committing transaction:", err)
+		return
+	}
+	fmt.Println("Transaction committed")
+}
+
+func (r *StudentRepository) SendSmsPaymentSuccessful(ctx context.Context, studentId string, groupId string, companyId string) {
+	var smsTemplate models.SmsTemplate
+	var texts []string
+	var teacherId, phoneNumber string
+	var smsBalance int
+	teacherName := "O'qituvchi"
+
+	// Fetch SMS template
+	err := r.db.QueryRow(`SELECT id, texts, action_type, sms_template_type, is_active FROM sms_template WHERE company_id=$1 AND action_type='PAYMENT_SUCCESSFUL_ALERT' AND sms_template_type='ACTION' AND is_active=true`, companyId).
 		Scan(&smsTemplate.ID, pq.Array(&texts), &smsTemplate.ActionType, &smsTemplate.SmsTemplateType, &smsTemplate.IsActive)
 	if err != nil {
 		fmt.Println("error fetching sms template:", err)
