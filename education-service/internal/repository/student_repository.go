@@ -779,7 +779,7 @@ func (r *StudentRepository) ChangeUserBalanceHistory(ctx context.Context, compan
 		return nil, status.Errorf(codes.Canceled, err.Error())
 	}
 	if paymentType == "ADD" {
-		r.SendSmsPaymentSuccessful(ctx, studentId, groupId, companyId)
+		r.SendSmsPaymentSuccessful(ctx, studentId, groupId, companyId, amountValue)
 	}
 	return &pb.AbsResponse{
 		Status:  http.StatusOK,
@@ -1172,7 +1172,7 @@ func (r *StudentRepository) SendSmsReasonAddToGroup(ctx context.Context, student
 	}
 
 	// Format SMS text
-	smsText, usedSmsCount := utils.GetSmsFormatted(strings.Join(texts, " "), teacherName, r.db, studentId, groupId)
+	smsText, usedSmsCount := utils.GetSmsFormatted(strings.Join(texts, " "), teacherName, r.db, studentId, groupId, 0)
 	fmt.Printf("SMS formatted successfully: %s\n", smsText)
 
 	// Insert into sms_used
@@ -1212,7 +1212,7 @@ func (r *StudentRepository) SendSmsReasonAddToGroup(ctx context.Context, student
 	fmt.Println("Transaction committed")
 }
 
-func (r *StudentRepository) SendSmsPaymentSuccessful(ctx context.Context, studentId string, groupId string, companyId string) {
+func (r *StudentRepository) SendSmsPaymentSuccessful(ctx context.Context, studentId string, groupId string, companyId string, amountValue float64) {
 	var smsTemplate models.SmsTemplate
 	var texts []string
 	var teacherId, phoneNumber string
@@ -1277,7 +1277,7 @@ func (r *StudentRepository) SendSmsPaymentSuccessful(ctx context.Context, studen
 	}
 
 	// Format SMS text
-	smsText, usedSmsCount := utils.GetSmsFormatted(strings.Join(texts, " "), teacherName, r.db, studentId, groupId)
+	smsText, usedSmsCount := utils.GetSmsFormatted(strings.Join(texts, " "), teacherName, r.db, studentId, groupId, amountValue)
 	fmt.Printf("SMS formatted successfully: %s\n", smsText)
 
 	// Insert into sms_used

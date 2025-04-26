@@ -81,7 +81,7 @@ func SendSMS(phoneNumber, message string) error {
 	return nil
 }
 
-func GetSmsFormatted(sms, teacher string, db *sql.DB, studentID, groupID string) (string, int) {
+func GetSmsFormatted(sms, teacher string, db *sql.DB, studentID, groupID string, amountValue float64) (string, int) {
 	var studentName string
 	err := db.QueryRow("SELECT name FROM students WHERE id = $1", studentID).Scan(&studentName)
 	if err != nil {
@@ -123,6 +123,7 @@ func GetSmsFormatted(sms, teacher string, db *sql.DB, studentID, groupID string)
 		"(TEACHER)": teacher,
 		"(DAYS)":    daysStr,
 		"(ROOM)":    roomName,
+		"(SUM)":     fmt.Sprintf("%.2f", amountValue),
 	}
 
 	for key, value := range replacements {
