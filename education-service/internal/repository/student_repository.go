@@ -1316,3 +1316,17 @@ func (r *StudentRepository) SendSmsPaymentSuccessful(ctx context.Context, studen
 	}
 	fmt.Println("Transaction committed")
 }
+
+func (r *StudentRepository) SendSmsBeforePaymentAlert() {
+
+}
+
+func (r *StudentRepository) SendSmsInsufficientBalanceAlert() {
+
+}
+
+func (r *StudentRepository) NotParticipateAlert() {
+}
+
+func (r *StudentRepository) HappyBirthdayAlert() {
+}

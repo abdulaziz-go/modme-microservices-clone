@@ -118,6 +118,31 @@ func RunServer() {
 	if err != nil {
 		log.Fatalf("Failed to schedule cron job: %v", err)
 	}
+	_, err = c.AddFunc("10 1 26 * *", func() {
+		fmt.Println("Running payment alert send message on 26th ....")
+		studentRepo.SendSmsBeforePaymentAlert()
+		fmt.Println("Completed before payment alert send message on 26th")
+	})
+
+	if err != nil {
+		log.Fatalf("Failed to schedule 27th cron job: %v", err)
+	}
+
+	_, err = c.AddFunc("0 22 * * *", func() {
+		fmt.Println("Running daily insufficient balance alert ....")
+		studentRepo.SendSmsInsufficientBalanceAlert()
+		fmt.Println("Completed daily insufficient balance alert ....")
+		fmt.Println("Running not participate alert ... ")
+		studentRepo.NotParticipateAlert()
+		fmt.Println("Completed not participate alert ...")
+		fmt.Println("Running Happy birthday alert ...")
+		studentRepo.HappyBirthdayAlert()
+		fmt.Println("Completed Happy birthday alert ...")
+	})
+	if err != nil {
+		log.Fatalf("Failed to schedule daily cron job: %v", err)
+	}
+
 	c.Start()
 
 	go func() {

@@ -62,6 +62,11 @@ BEGIN
         VALUES (gen_random_uuid(), OLD.id, 'gender', OLD.gender::text, NEW.gender::text, NOW());
     END IF;
 
+    IF NEW.company_id IS DISTINCT FROM OLD.company_id THEN
+        INSERT INTO users_history (id, user_id, updated_field, old_value, current_value, created_at)
+        VALUES (gen_random_uuid(), OLD.id, 'company_id', OLD.company_id::text, NEW.company_id::text, NOW());
+    END IF;
+
     RETURN NEW; -- Return the new record
 END;
 $$ LANGUAGE plpgsql;
