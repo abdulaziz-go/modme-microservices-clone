@@ -272,7 +272,7 @@ func (r *StudentRepository) AddToGroup(ctx context.Context, companyId string, gr
 		if err != nil {
 			continue
 		}
-		r.SendSmsReasonAddToGroup(ctx, data, groupId, companyId)
+		go r.SendSmsReasonAddToGroup(ctx, data, groupId, companyId)
 	}
 	return nil
 }
@@ -779,7 +779,7 @@ func (r *StudentRepository) ChangeUserBalanceHistory(ctx context.Context, compan
 		return nil, status.Errorf(codes.Canceled, err.Error())
 	}
 	if paymentType == "ADD" {
-		r.SendSmsPaymentSuccessful(ctx, studentId, groupId, companyId, amountValue)
+		go r.SendSmsPaymentSuccessful(ctx, studentId, groupId, companyId, amountValue)
 	}
 	return &pb.AbsResponse{
 		Status:  http.StatusOK,
