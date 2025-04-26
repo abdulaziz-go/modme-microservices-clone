@@ -6549,6 +6549,7 @@ func (x *GetSmsLogRequest) GetStudentId() string {
 type GetSmsLogResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Datas         []*SmsLogList          `protobuf:"bytes,1,rep,name=datas,proto3" json:"datas,omitempty"`
+	SmsCount      int32                  `protobuf:"varint,2,opt,name=smsCount,proto3" json:"smsCount,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -6588,6 +6589,13 @@ func (x *GetSmsLogResponse) GetDatas() []*SmsLogList {
 		return x.Datas
 	}
 	return nil
+}
+
+func (x *GetSmsLogResponse) GetSmsCount() int32 {
+	if x != nil {
+		return x.SmsCount
+	}
+	return 0
 }
 
 type SmsLogList struct {
@@ -7802,9 +7810,10 @@ const file_education_proto_rawDesc = "" +
 	"\tstudentId\x18\x02 \x01(\tR\tstudentId\"g\n" +
 	"\x10GetSmsLogRequest\x125\n" +
 	"\vpageRequest\x18\x01 \x01(\v2\x13.common.PageRequestR\vpageRequest\x12\x1c\n" +
-	"\tstudentId\x18\x02 \x01(\tR\tstudentId\"@\n" +
+	"\tstudentId\x18\x02 \x01(\tR\tstudentId\"\\\n" +
 	"\x11GetSmsLogResponse\x12+\n" +
-	"\x05datas\x18\x01 \x03(\v2\x15.education.SmsLogListR\x05datas\"\x82\x01\n" +
+	"\x05datas\x18\x01 \x03(\v2\x15.education.SmsLogListR\x05datas\x12\x1a\n" +
+	"\bsmsCount\x18\x02 \x01(\x05R\bsmsCount\"\x82\x01\n" +
 	"\n" +
 	"SmsLogList\x12 \n" +
 	"\vcreatorName\x18\x01 \x01(\tR\vcreatorName\x12\x1a\n" +

@@ -1268,6 +1268,8 @@ definitions:
         items:
           $ref: '#/definitions/pb.SmsLogList'
         type: array
+      smsCount:
+        type: integer
     type: object
   pb.GetSmsTemplateRequest:
     properties:

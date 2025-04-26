@@ -24,6 +24,7 @@ func (r SmsRepository) GetSmsLog(companyId string, studentId string, pageReq *pb
 	var (
 		baseQuery string
 		args      []interface{}
+		smsCount  int32
 	)
 
 	if studentId != "" {
@@ -52,9 +53,11 @@ func (r SmsRepository) GetSmsLog(companyId string, studentId string, pageReq *pb
 		}
 		logs = append(logs, &log)
 	}
+	r.db.QueryRow(`SELECT sms_balance from company where id = $1`, companyId).Scan(&smsCount)
 
 	return &pb.GetSmsLogResponse{
-		Datas: logs,
+		Datas:    logs,
+		SmsCount: smsCount,
 	}, nil
 }
 

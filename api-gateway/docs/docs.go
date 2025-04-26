@@ -7572,6 +7572,9 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/pb.SmsLogList"
                     }
+                },
+                "smsCount": {
+                    "type": "integer"
                 }
             }
         },

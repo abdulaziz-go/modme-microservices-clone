@@ -746,6 +746,7 @@ message GetSmsLogRequest {
 }
 message GetSmsLogResponse {
   repeated SmsLogList datas=1;
+  int32 smsCount=2;
 }
 message SmsLogList{
   string creatorName =1;
