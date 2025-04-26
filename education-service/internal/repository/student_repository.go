@@ -1178,7 +1178,7 @@ func (r *StudentRepository) SendSmsReasonAddToGroup(ctx context.Context, student
 	// Insert into sms_used
 	_, err = tx.Exec(`INSERT INTO sms_used(id, company_id, sms_template_id, texts, sms_count, student_id, sms_used_type, created_at, created_by_id, created_by_name) 
               VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
-		uuid.New(), companyId, smsTemplate.ID, pq.Array(smsText), usedSmsCount, studentId, "BY_TEMPLATE", time.Now(), "00000000-0000-0000-0000-000000000000", "system")
+		uuid.New(), companyId, smsTemplate.ID, pq.Array([]string{smsText}), usedSmsCount, studentId, "BY_TEMPLATE", time.Now(), "00000000-0000-0000-0000-000000000000", "system")
 	if err != nil {
 		fmt.Println("error inserting into sms_used:", err)
 		tx.Rollback()
@@ -1283,7 +1283,7 @@ func (r *StudentRepository) SendSmsPaymentSuccessful(ctx context.Context, studen
 	// Insert into sms_used
 	_, err = tx.Exec(`INSERT INTO sms_used(id, company_id, sms_template_id, texts, sms_count, student_id, sms_used_type, created_at, created_by_id, created_by_name) 
               VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
-		uuid.New(), companyId, smsTemplate.ID, pq.Array(smsText), usedSmsCount, studentId, "BY_TEMPLATE", time.Now(), "00000000-0000-0000-0000-000000000000", "system")
+		uuid.New(), companyId, smsTemplate.ID, pq.Array([]string{smsText}), usedSmsCount, studentId, "BY_TEMPLATE", time.Now(), "00000000-0000-0000-0000-000000000000", "system")
 	if err != nil {
 		fmt.Println("error inserting into sms_used:", err)
 		tx.Rollback()
