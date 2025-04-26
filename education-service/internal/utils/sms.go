@@ -75,6 +75,7 @@ func SendSMS(phoneNumber, message string) error {
 	body, _ := io.ReadAll(res.Body)
 	if res.StatusCode != http.StatusOK {
 		fmt.Println("SMS failed:", string(body))
+		//return errors.New(string(body))
 	}
 
 	fmt.Println("SMS sent:", string(body))
