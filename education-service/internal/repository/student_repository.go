@@ -1104,20 +1104,6 @@ func (r *StudentRepository) countLessonsBetweenDates(startDate, endDate string, 
 	return lessonCount, nil
 }
 
-/*
-CREATE TABLE IF NOT EXISTS "sms_template" (
-                                "id" SERIAL PRIMARY KEY,
-                                "company_id" int NOT NULL,
-                                "texts" text[] NOT NULL,
-                                "sms_count" int NOT NULL,
-                                "action_type" varchar check ( action_type in ('BEFORE_PAYMENT_ALERT' , 'INSUFFICIENT_BALANCE_ALERT' , 'PAYMENT_SUCCESSFUL_ALERT' , 'JOINED_GROUP_ALERT' , 'BIRTHDAY_ALERT' , 'NOT_PARTICIPATE_ALERT')),
-                                "insufficient_balance_send_count" int NOT NULL DEFAULT 1,
-                                "sms_template_type" varchar check ( sms_template_type in ('ACTION' , 'TEMPLATE')),
-                                "is_active" bool DEFAULT FALSE,
-                                "created_at" timestamp DEFAULT (CURRENT_TIMESTAMP)
-);
-*/
-
 func (r *StudentRepository) SendSmsReasonAddToGroup(ctx context.Context, studentId string, groupId string, companyId string) {
 	var smsTemplate models.SmsTemplate
 	var texts []string

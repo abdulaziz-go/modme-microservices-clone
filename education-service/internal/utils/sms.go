@@ -74,13 +74,7 @@ func SendSMS(phoneNumber, message string) error {
 
 	body, _ := io.ReadAll(res.Body)
 	if res.StatusCode != http.StatusOK {
-		// retry once
-		token, err := getEskizToken()
-		if err != nil {
-			return err
-		}
-		smsToken = token
-		return SendSMS(phoneNumber, message)
+		fmt.Println("SMS failed:", string(body))
 	}
 
 	fmt.Println("SMS sent:", string(body))
