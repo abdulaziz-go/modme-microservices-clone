@@ -1172,7 +1172,7 @@ func (r *StudentRepository) SendSmsReasonAddToGroup(ctx context.Context, student
 	}
 
 	// Format SMS text
-	smsText, usedSmsCount := utils.GetSmsFormatted(strings.Join(texts, " "), teacherName, r.db, studentId, groupId, 0)
+	smsText, usedSmsCount := utils.GetSmsFormatted(strings.Join(texts, " "), teacherName, r.db, studentId, groupId, 0, companyId)
 	fmt.Printf("SMS formatted successfully: %s\n", smsText)
 
 	// Insert into sms_used
@@ -1277,7 +1277,7 @@ func (r *StudentRepository) SendSmsPaymentSuccessful(ctx context.Context, studen
 	}
 
 	// Format SMS text
-	smsText, usedSmsCount := utils.GetSmsFormatted(strings.Join(texts, " "), teacherName, r.db, studentId, groupId, amountValue)
+	smsText, usedSmsCount := utils.GetSmsFormatted(strings.Join(texts, " "), teacherName, r.db, studentId, groupId, amountValue, companyId)
 	fmt.Printf("SMS formatted successfully: %s\n", smsText)
 
 	// Insert into sms_used

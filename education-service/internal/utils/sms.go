@@ -82,7 +82,7 @@ func SendSMS(phoneNumber, message string) error {
 	return nil
 }
 
-func GetSmsFormatted(sms, teacher string, db *sql.DB, studentID, groupID string, amountValue float64) (string, int) {
+func GetSmsFormatted(sms, teacher string, db *sql.DB, studentID, groupID string, amountValue float64, companyId string) (string, int) {
 	var studentName string
 	err := db.QueryRow("SELECT name FROM students WHERE id = $1", studentID).Scan(&studentName)
 	if err != nil {
@@ -108,11 +108,13 @@ func GetSmsFormatted(sms, teacher string, db *sql.DB, studentID, groupID string,
 	}
 
 	var companyName string
-	err = db.QueryRow("SELECT title FROM company WHERE id = $1", companyID).Scan(&companyName)
+	err = db.QueryRow("SELECT title FROM company WHERE id = $1", companyId).Scan(&companyName)
 	if err != nil {
 		fmt.Println("Error fetching company:", err)
 		companyName = "(LC)"
 	}
+
+	fmt.Println("here company name from response ", companyName)
 
 	daysStr := strings.Join(days, ", ")
 
