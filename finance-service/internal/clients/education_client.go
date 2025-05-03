@@ -42,6 +42,14 @@ func (ec *EducationClient) GetGroupNameById(ctx context.Context, groupId string)
 	return group.Name
 }
 
+func (ec *EducationClient) GetGroupDetailsByGroupId(ctx context.Context, groupId string) *pb.GetGroupAbsResponse {
+	group, err := ec.groupClient.GetGroupById(ctx, &pb.GetGroupByIdRequest{Id: groupId})
+	if err != nil {
+		return &pb.GetGroupAbsResponse{}
+	}
+	return group
+}
+
 func (ec *EducationClient) ChangeUserBalanceHistory(ctx context.Context, studentId string, amount string, givenDate string, comment string, paymentType string, actionById string, actionByName string, groupId string) error {
 	_, err := ec.studentClient.ChangeUserBalanceHistory(ctx, &pb.ChangeUserBalanceHistoryRequest{
 		StudentId:     studentId,

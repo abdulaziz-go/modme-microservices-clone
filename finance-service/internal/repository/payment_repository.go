@@ -21,7 +21,6 @@ type PaymentRepository struct {
 }
 
 func (r *PaymentRepository) AddPayment(ctx context.Context, companyId string, givenDate, sum, method, comment, studentId, actionByName, actionById, groupId string, isRefund bool) error {
-
 	tx, err := r.db.Begin()
 	if err != nil {
 		return fmt.Errorf("failed to begin transaction: %v", err)
@@ -50,16 +49,18 @@ func (r *PaymentRepository) AddPayment(ctx context.Context, companyId string, gi
 	}
 	paymentID := uuid.New()
 	query := `INSERT INTO student_payments 
-		(id, student_id, method, amount, given_date, comment, created_by_id, created_by_name , created_at , group_id ,payment_type, company_id)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 , $10 , $11 , $12)`
+		(id, student_id, method, amount, given_date, comment, created_by_id, created_by_name , created_at , group_id ,payment_type, company_id , teacher_id)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 , $10 , $11 , $12 , $13)`
 	paymentType := "ADD"
 	if isRefund {
 		paymentType = "REFUND"
 	}
 	if groupId == "" {
-		_, err = tx.Exec(query, paymentID, studentId, method, amount, parsedDate, comment, actionById, actionByName, time.Now(), nil, paymentType, companyId)
+		_, err = tx.Exec(query, paymentID, studentId, method, amount, parsedDate, comment, actionById, actionByName, time.Now(), nil, paymentType, companyId, nil)
 	} else {
-		_, err = tx.Exec(query, paymentID, studentId, method, amount, parsedDate, comment, actionById, actionByName, time.Now(), groupId, paymentType, companyId)
+		ctx, cancelFunc := utils.NewTimoutContext(ctx, companyId)
+		defer cancelFunc()
+		_, err = tx.Exec(query, paymentID, studentId, method, amount, parsedDate, comment, actionById, actionByName, time.Now(), groupId, paymentType, companyId, r.educationClient.GetGroupDetailsByGroupId(ctx, groupId).TeacherId)
 	}
 	if err != nil {
 		return fmt.Errorf("failed to add payment: %v", err)
@@ -468,7 +469,6 @@ func (r *PaymentRepository) GetAllStudentPayments(
 	sorts []*pb.SortBy,
 	pageRequest *pb.PageRequest,
 ) (*pb.GetAllStudentPaymentsResponse, error) {
-
 	query := `
 SELECT 
     student_id,
@@ -494,6 +494,7 @@ WHERE given_date BETWEEN $1 AND $2
 		"student_id":    true,
 		"created_by_id": true,
 		"amount":        true,
+		"teacher_id":    true,
 	}
 
 	for _, f := range filters {

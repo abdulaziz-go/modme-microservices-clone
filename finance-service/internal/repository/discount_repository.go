@@ -59,7 +59,7 @@ func (r *DiscountRepository) CreateDiscount(ctx context.Context, companyId, grou
 		return status.Errorf(codes.Internal, "Error fetching student payments: %v", err)
 	}
 	defer rows.Close()
-
+ 
 	var payments []struct {
 		ID                    string
 		StudentID             string
