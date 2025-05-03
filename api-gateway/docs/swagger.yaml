@@ -637,6 +637,8 @@ definitions:
     properties:
       comment:
         type: string
+      companyId:
+        type: string
       leadId:
         type: string
       name:

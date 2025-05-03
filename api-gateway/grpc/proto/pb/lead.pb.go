@@ -1268,6 +1268,7 @@ type CreateLeadDataRequest struct {
 	PhoneNumber   string                 `protobuf:"bytes,2,opt,name=phoneNumber,proto3" json:"phoneNumber"`
 	LeadId        string                 `protobuf:"bytes,3,opt,name=leadId,proto3" json:"leadId"`
 	Comment       string                 `protobuf:"bytes,4,opt,name=comment,proto3" json:"comment"`
+	CompanyId     string                 `protobuf:"bytes,5,opt,name=companyId,proto3" json:"companyId"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1326,6 +1327,13 @@ func (x *CreateLeadDataRequest) GetLeadId() string {
 func (x *CreateLeadDataRequest) GetComment() string {
 	if x != nil {
 		return x.Comment
+	}
+	return ""
+}
+
+func (x *CreateLeadDataRequest) GetCompanyId() string {
+	if x != nil {
+		return x.CompanyId
 	}
 	return ""
 }
@@ -1616,12 +1624,13 @@ const file_lead_proto_rawDesc = "" +
 	"\tstartDate\x18\b \x01(\tR\tstartDate\x12\x19\n" +
 	"\bend_date\x18\t \x01(\tR\aendDate\x12\x14\n" +
 	"\x05setId\x18\n" +
-	" \x01(\tR\x05setId\"\x7f\n" +
+	" \x01(\tR\x05setId\"\x9d\x01\n" +
 	"\x15CreateLeadDataRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
 	"\vphoneNumber\x18\x02 \x01(\tR\vphoneNumber\x12\x16\n" +
 	"\x06leadId\x18\x03 \x01(\tR\x06leadId\x12\x18\n" +
-	"\acomment\x18\x04 \x01(\tR\acomment\"\xa9\x01\n" +
+	"\acomment\x18\x04 \x01(\tR\acomment\x12\x1c\n" +
+	"\tcompanyId\x18\x05 \x01(\tR\tcompanyId\"\xa9\x01\n" +
 	"\x15UpdateLeadDataRequest\x12\x0e\n" +
 	"\x02id\x18\x04 \x01(\tR\x02id\x12\x12\n" +
 	"\x04type\x18\x05 \x01(\tR\x04type\x12\x1c\n" +

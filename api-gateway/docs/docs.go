@@ -6600,6 +6600,9 @@ const docTemplate = `{
                 "comment": {
                     "type": "string"
                 },
+                "companyId": {
+                    "type": "string"
+                },
                 "leadId": {
                     "type": "string"
                 },
