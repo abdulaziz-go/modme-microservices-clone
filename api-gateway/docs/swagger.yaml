@@ -4246,7 +4246,7 @@ paths:
       summary: ADMIN
       tags:
       - leads
-  /api/lead/get-all:
+  /api/lead/get-all/{companyId}:
     get:
       consumes:
       - application/json

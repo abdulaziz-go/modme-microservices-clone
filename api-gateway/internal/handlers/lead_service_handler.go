@@ -293,14 +293,14 @@ func DeleteSet(ctx *gin.Context) {
 // @Security Bearer
 // @Router /api/leadData/create [post]
 func CreateLeadData(ctx *gin.Context) {
-	ctxR, cancel := etc.NewTimoutContext(ctx)
-	defer cancel()
 	req := pb.CreateLeadDataRequest{}
 	err := ctx.ShouldBindJSON(&req)
 	if err != nil {
 		utils.RespondError(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
+	ctxR, cancel := etc.NewTimeoutContextManual(ctx, req.CompanyId)
+	defer cancel()
 	resp, err := leadClient.CreateLeadData(ctxR, &req)
 	if err != nil {
 		utils.RespondError(ctx, http.StatusConflict, err.Error())
@@ -407,9 +407,9 @@ func ChangeLeadData(ctx *gin.Context) {
 // @Failure 400 {object} utils.AbsResponse
 // @Failure 401 {object} utils.AbsResponse
 // @Failure 409 {object} utils.AbsResponse
-// @Router /api/lead/get-all [get]
+// @Router /api/lead/get-all/{companyId} [get]
 func GetAllLead(ctx *gin.Context) {
-	ctxR, cancel := etc.NewTimoutContext(ctx)
+	ctxR, cancel := etc.NewTimeoutContextManual(ctx, ctx.Param("companyId"))
 	defer cancel()
 
 	resp, err := leadClient.GetAllLead(ctxR)

@@ -14,7 +14,7 @@ func LeadRoutes(api *gin.RouterGroup, userClient *client.UserClient) {
 		lead.POST("/get-lead-common", etc.AuthMiddleware([]string{"ADMIN", "CEO"}, userClient), handlers.GetLeadCommon)
 		lead.PUT("/update/:id", etc.AuthMiddleware([]string{"ADMIN", "CEO"}, userClient), handlers.UpdateLead)
 		lead.DELETE("/delete/:id", etc.AuthMiddleware([]string{"ADMIN", "CEO"}, userClient), handlers.DeleteLead)
-		lead.GET("/get-all", etc.AuthMiddleware([]string{"ADMIN", "CEO"}, userClient), handlers.GetAllLead)
+		lead.GET("/get-all/:companyId", handlers.GetAllLead)
 		lead.GET("/get-lead-reports", etc.AuthMiddleware([]string{"ADMIN", "CEO"}, userClient), handlers.GetLeadReports)
 	}
 	expectation := api.Group("/expectation")

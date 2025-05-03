@@ -3776,7 +3776,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/lead/get-all": {
+        "/api/lead/get-all/{companyId}": {
             "get": {
                 "security": [
                     {

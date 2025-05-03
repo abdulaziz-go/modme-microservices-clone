@@ -56,3 +56,10 @@ func NewTimoutContext(ctx context.Context) (context.Context, context.CancelFunc)
 	res, cancel := context.WithTimeout(ctx, time.Second*15)
 	return res, cancel
 }
+
+func NewTimeoutContextManual(ctx context.Context, companyId string) (context.Context, context.CancelFunc) {
+	md := metadata.Pairs()
+	md.Set("company_id", companyId)
+	ctx = metadata.NewOutgoingContext(ctx, md)
+	return context.WithTimeout(ctx, time.Second*15)
+}

@@ -17,7 +17,7 @@ var smsToken string
 
 func getEskizToken() (string, error) {
 	url := "https://notify.eskiz.uz/api/auth/login"
-	payload := strings.NewReader("email=&password=")
+	payload := strings.NewReader("email=abdulla.ergashev.2020@mail.ru&password=V16Q4KCD008jNLmgQ2zcnxxT5tgNM085BJShe17a")
 
 	req, err := http.NewRequest("POST", url, payload)
 	if err != nil {
