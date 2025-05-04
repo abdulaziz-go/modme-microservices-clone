@@ -1471,6 +1471,7 @@ func (r *StudentRepository) NotParticipateAlert() {
 			WHERE company_id = $1
 			AND created_at >= NOW() - INTERVAL '130 minutes'
 			AND sms_send = false
+			AND status = 0
 		`, companyId)
 		if err != nil {
 			fmt.Println("[NotParticipateAlert] failed to fetch attendance records:", err)
