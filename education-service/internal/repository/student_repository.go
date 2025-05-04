@@ -1326,7 +1326,150 @@ func (r *StudentRepository) SendSmsInsufficientBalanceAlert() {
 }
 
 func (r *StudentRepository) NotParticipateAlert() {
+
 }
 
 func (r *StudentRepository) HappyBirthdayAlert() {
+	fmt.Println("[HappyBirthdayAlert] Starting birthday SMS alert function")
+	loc, err := time.LoadLocation("Asia/Tashkent")
+	if err != nil {
+		fmt.Println("[HappyBirthdayAlert] failed to load Asia/Tashkent location:", err)
+		return
+	}
+	fmt.Println("[HappyBirthdayAlert] Loaded Asia/Tashkent timezone")
+	today := time.Now().In(loc).Format("01-02")
+
+	fmt.Println("[HappyBirthdayAlert] Querying for students with birthday today:", today)
+	query := `
+		SELECT id, phone, company_id
+		FROM students
+		WHERE to_char(date_of_birth, 'MM-DD') = $1 AND condition = 'ACTIVE'
+	`
+
+	rows, err := r.db.Query(query, today)
+	if err != nil {
+		fmt.Println("[HappyBirthdayAlert] failed to fetch birthday students:", err)
+		return
+	}
+	defer rows.Close()
+	fmt.Println("[HappyBirthdayAlert] Successfully queried for birthday students")
+
+	for rows.Next() {
+		fmt.Println("[HappyBirthdayAlert] Starting loop for next student")
+		var studentId, phoneNumber string
+		var companyId int
+
+		if err := rows.Scan(&studentId, &phoneNumber, &companyId); err != nil {
+			fmt.Println("[HappyBirthdayAlert] error scanning student birthday row:", err)
+			continue
+		}
+
+		var smsTemplate models.SmsTemplate
+		var texts []string
+		var smsBalance int
+
+		fmt.Println("[HappyBirthdayAlert] Querying for SMS template")
+		err = r.db.QueryRow(`SELECT id, texts, action_type, sms_template_type, is_active FROM sms_template WHERE company_id=$1 AND action_type='BIRTHDAY_ALERT' AND sms_template_type='ACTION' AND is_active=true`, companyId).
+			Scan(&smsTemplate.ID, pq.Array(&texts), &smsTemplate.ActionType, &smsTemplate.SmsTemplateType, &smsTemplate.IsActive)
+		if err != nil {
+			fmt.Println("[HappyBirthdayAlert] error fetching sms template:", err)
+			continue
+		}
+		fmt.Println("[HappyBirthdayAlert] Successfully fetched SMS template")
+
+		fmt.Println("[HappyBirthdayAlert] Querying for SMS balance before sending")
+		err = r.db.QueryRow(`SELECT sms_balance FROM company WHERE id=$1`, companyId).Scan(&smsBalance)
+		if err != nil {
+			fmt.Println("[HappyBirthdayAlert] error fetching sms balance:", err)
+			continue
+		}
+		fmt.Printf("[HappyBirthdayAlert] SMS balance before sending: %d\n", smsBalance)
+		if smsBalance < 1 {
+			fmt.Println("[HappyBirthdayAlert] not enough SMS balance")
+			continue
+		}
+
+		fmt.Println("[HappyBirthdayAlert] Creating timeout context")
+		_, cancel := utils.NewTimoutContext(context.Background(), fmt.Sprint(companyId))
+		defer cancel()
+
+		fmt.Println("[HappyBirthdayAlert] Beginning transaction")
+		tx, err := r.db.Begin()
+		if err != nil {
+			fmt.Println("[HappyBirthdayAlert] failed to begin transaction:", err)
+			continue
+		}
+		fmt.Println("[HappyBirthdayAlert] Successfully began transaction")
+
+		fmt.Println("[HappyBirthdayAlert] Checking SMS balance inside transaction")
+		err = tx.QueryRow(`SELECT sms_balance FROM company WHERE id=$1`, companyId).Scan(&smsBalance)
+		if err != nil {
+			fmt.Println("[HappyBirthdayAlert] error fetching sms balance inside transaction:", err)
+			tx.Rollback()
+			continue
+		}
+		if smsBalance < 1 {
+			fmt.Println("[HappyBirthdayAlert] not enough SMS balance inside transaction")
+			tx.Rollback()
+			continue
+		}
+		fmt.Printf("[HappyBirthdayAlert] SMS balance inside transaction: %d\n", smsBalance)
+
+		fmt.Println("[HappyBirthdayAlert] Getting teacher info for SMS formatting")
+		var teacherName string
+		var groupId string
+		err = r.db.QueryRow(`SELECT g.id, g.teacher_id FROM group_students gs JOIN groups g ON gs.group_id = g.id WHERE gs.student_id = $1 AND gs.condition = 'ACTIVE' AND g.company_id = $2 LIMIT 1`, studentId, companyId).
+			Scan(&groupId, &teacherName)
+		if err == nil && teacherName != "" {
+			name, err := r.userClient.GetTeacherById(context.Background(), teacherName)
+			if err == nil {
+				teacherName = name
+			} else {
+				teacherName = "O'qituvchi"
+			}
+		} else {
+			teacherName = "O'qituvchi"
+		}
+		fmt.Println("[HappyBirthdayAlert] Teacher info fetched")
+
+		fmt.Println("[HappyBirthdayAlert] Formatting SMS")
+		smsText, usedSmsCount := utils.GetSmsFormatted(strings.Join(texts, " "), teacherName, r.db, studentId, groupId, 0, fmt.Sprint(companyId))
+		fmt.Println("[HappyBirthdayAlert] SMS formatted:", smsText)
+
+		fmt.Println("[HappyBirthdayAlert] Inserting into sms_used")
+		_, err = tx.Exec(`INSERT INTO sms_used(id, company_id, sms_template_id, texts, sms_count, student_id, sms_used_type, created_at, created_by_id, created_by_name) 
+			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+			uuid.New(), companyId, smsTemplate.ID, pq.Array([]string{smsText}), usedSmsCount, studentId, "BY_TEMPLATE", time.Now(), "00000000-0000-0000-0000-000000000000", "system")
+		if err != nil {
+			fmt.Println("[HappyBirthdayAlert] failed to insert sms_used:", err)
+			tx.Rollback()
+			continue
+		}
+		fmt.Println("[HappyBirthdayAlert] Successfully inserted into sms_used")
+
+		fmt.Println("[HappyBirthdayAlert] Updating company SMS balance")
+		_, err = tx.Exec(`UPDATE company SET sms_balance=sms_balance-$1 WHERE id=$2`, usedSmsCount, companyId)
+		if err != nil {
+			fmt.Println("[HappyBirthdayAlert] failed to update sms_balance:", err)
+			tx.Rollback()
+			continue
+		}
+		fmt.Println("[HappyBirthdayAlert] Successfully updated company SMS balance")
+
+		fmt.Println("[HappyBirthdayAlert] Sending SMS")
+		err = utils.SendSMS(phoneNumber, smsText)
+		if err != nil {
+			fmt.Println("[HappyBirthdayAlert] failed to send SMS:", err)
+			tx.Rollback()
+			continue
+		}
+		fmt.Println("[HappyBirthdayAlert] SMS sent successfully")
+
+		fmt.Println("[HappyBirthdayAlert] Committing transaction")
+		if err := tx.Commit(); err != nil {
+			fmt.Println("[HappyBirthdayAlert] failed to commit transaction:", err)
+			continue
+		}
+		fmt.Printf("[HappyBirthdayAlert] Birthday SMS sent to student %s\n", studentId)
+	}
 }
