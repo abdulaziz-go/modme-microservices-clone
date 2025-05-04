@@ -1446,7 +1446,134 @@ func (r *StudentRepository) SendSmsInsufficientBalanceAlert() {
 }
 
 func (r *StudentRepository) NotParticipateAlert() {
+	fmt.Println("[NotParticipateAlert] Starting not participate SMS alert function")
 
+	// 1. Fetch all companies with active NOT_PARTICIPATE_ALERT template
+	companyRows, err := r.db.Query(`SELECT DISTINCT company_id FROM sms_template WHERE action_type='NOT_PARTICIPATE_ALERT' AND sms_template_type='ACTION' AND is_active=true`)
+	if err != nil {
+		fmt.Println("[NotParticipateAlert] failed to fetch companies:", err)
+		return
+	}
+	defer companyRows.Close()
+
+	for companyRows.Next() {
+		var companyId int64
+		if err := companyRows.Scan(&companyId); err != nil {
+			fmt.Println("[NotParticipateAlert] error scanning company_id:", err)
+			continue
+		}
+		fmt.Printf("[NotParticipateAlert] Processing company_id: %d\n", companyId)
+
+		// 2. Get attendance records in last 130 minutes, sms_send = false
+		attendanceRows, err := r.db.Query(`
+			SELECT DISTINCT student_id, group_id
+			FROM attendance
+			WHERE company_id = $1
+			AND created_at >= NOW() - INTERVAL '130 minutes'
+			AND sms_send = false
+		`, companyId)
+		if err != nil {
+			fmt.Println("[NotParticipateAlert] failed to fetch attendance records:", err)
+			continue
+		}
+
+		for attendanceRows.Next() {
+			var studentId string
+			var groupId int64
+			if err := attendanceRows.Scan(&studentId, &groupId); err != nil {
+				fmt.Println("[NotParticipateAlert] failed to scan attendance row:", err)
+				continue
+			}
+
+			var smsTemplate models.SmsTemplate
+			var texts []string
+			var smsBalance int
+			var teacherId, phoneNumber, teacherName string
+
+			// Fetch SMS template for this company
+			err = r.db.QueryRow(`SELECT id, texts, action_type, sms_template_type, is_active FROM sms_template WHERE company_id=$1 AND action_type='NOT_PARTICIPATE_ALERT' AND sms_template_type='ACTION' AND is_active=true`, companyId).
+				Scan(&smsTemplate.ID, pq.Array(&texts), &smsTemplate.ActionType, &smsTemplate.SmsTemplateType, &smsTemplate.IsActive)
+			if err != nil {
+				fmt.Println("[NotParticipateAlert] error fetching sms template:", err)
+				continue
+			}
+
+			// Fetch student phone number
+			err = r.db.QueryRow(`SELECT phone FROM students WHERE id=$1`, studentId).Scan(&phoneNumber)
+			if err != nil {
+				fmt.Println("[NotParticipateAlert] error fetching phone number:", err)
+				continue
+			}
+
+			// Fetch teacher id and name
+			err = r.db.QueryRow(`SELECT teacher_id FROM groups WHERE id=$1`, groupId).Scan(&teacherId)
+			if err == nil && r.userClient != nil {
+				teacherName, _ = r.userClient.GetTeacherById(context.Background(), teacherId)
+			}
+			if teacherName == "" {
+				teacherName = "O'qituvchi"
+			}
+
+			// Format SMS
+			smsText, usedSmsCount := utils.GetSmsFormatted(strings.Join(texts, " "), teacherName, r.db, studentId, fmt.Sprintf("%d", groupId), 0, fmt.Sprint(companyId))
+			if smsText == "" {
+				fmt.Println("[NotParticipateAlert] smsText is empty")
+				continue
+			}
+
+			// Start transaction
+			tx, err := r.db.Begin()
+			if err != nil {
+				fmt.Println("[NotParticipateAlert] failed to begin transaction:", err)
+				continue
+			}
+
+			// Check SMS balance inside transaction
+			err = tx.QueryRow(`SELECT sms_balance FROM company WHERE id=$1`, companyId).Scan(&smsBalance)
+			if err != nil || smsBalance < usedSmsCount {
+				fmt.Println("[NotParticipateAlert] insufficient balance")
+				tx.Rollback()
+				continue
+			}
+
+			// Insert into sms_used
+			_, err = tx.Exec(`INSERT INTO sms_used(id, company_id, sms_template_id, texts, sms_count, student_id, sms_used_type, created_at, created_by_id, created_by_name) 
+				VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+				uuid.New(), companyId, smsTemplate.ID, pq.Array([]string{smsText}), usedSmsCount, studentId, "BY_TEMPLATE", time.Now(), "00000000-0000-0000-0000-000000000000", "system")
+			if err != nil {
+				tx.Rollback()
+				continue
+			}
+
+			// Update company SMS balance
+			_, err = tx.Exec(`UPDATE company SET sms_balance=sms_balance - $1 WHERE id=$2`, usedSmsCount, companyId)
+			if err != nil {
+				tx.Rollback()
+				continue
+			}
+
+			// Mark attendance rows as sms_send = true
+			_, err = tx.Exec(`UPDATE attendance SET sms_send = true WHERE company_id = $1 AND student_id = $2 AND group_id = $3 AND created_at >= NOW() - INTERVAL '130 minutes'`, companyId, studentId, groupId)
+			if err != nil {
+				tx.Rollback()
+				continue
+			}
+
+			// Send SMS
+			if err = utils.SendSMS(phoneNumber, smsText); err != nil {
+				tx.Rollback()
+				continue
+			}
+
+			if err := tx.Commit(); err != nil {
+				fmt.Println("[NotParticipateAlert] failed to commit:", err)
+				continue
+			}
+
+			fmt.Printf("[NotParticipateAlert] Sent SMS to student %s (company %d)\n", studentId, companyId)
+		}
+		attendanceRows.Close()
+	}
 }
 
 func (r *StudentRepository) HappyBirthdayAlert() {

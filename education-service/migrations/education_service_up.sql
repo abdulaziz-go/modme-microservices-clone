@@ -207,6 +207,7 @@ CREATE TABLE IF NOT EXISTS attendance
     created_by     uuid                                                         NOT NULL,
     creator_role   varchar CHECK ( creator_role in ('ADMIN', 'CEO', 'TEACHER')) NOT NULL,
     company_id     int references company (id),
+    sms_send       bool default false,
     PRIMARY KEY (group_id, student_id, attend_date)
 );
 
