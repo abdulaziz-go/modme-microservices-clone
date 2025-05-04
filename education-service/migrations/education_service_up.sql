@@ -225,8 +225,77 @@ CREATE TABLE IF NOT EXISTS students
     passport_id        varchar,
     gender             boolean,
     created_at         timestamp                                             DEFAULT now(),
+    zero_balance_updated_at timestamp ,
     company_id         int references company (id)
 );
+
+
+CREATE OR REPLACE FUNCTION update_zero_balance_timestamp()
+RETURNS TRIGGER AS
+$$
+BEGIN
+    IF NEW.balance < 0 AND (OLD.balance IS NULL OR OLD.balance >= 0) THEN
+        NEW.zero_balance_updated_at := NOW();
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_update_zero_balance
+BEFORE UPDATE ON students
+FOR EACH ROW
+EXECUTE FUNCTION update_zero_balance_timestamp();
+
+
+CREATE OR REPLACE FUNCTION get_students_with_zero_balance_within_interval(
+    p_days INT,
+    p_company_id INT
+)
+RETURNS TABLE (
+    id UUID,
+    name VARCHAR,
+    phone VARCHAR,
+    date_of_birth DATE,
+    balance DOUBLE PRECISION,
+    condition VARCHAR,
+    additional_contact VARCHAR,
+    address VARCHAR,
+    telegram_username VARCHAR,
+    passport_id VARCHAR,
+    gender BOOLEAN,
+    created_at TIMESTAMP,
+    zero_balance_updated_at TIMESTAMP,
+    company_id INT
+) AS
+$$
+BEGIN
+    RETURN QUERY
+    SELECT
+        s.id,
+        s.name,
+        s.phone,
+        s.date_of_birth,
+        s.balance,
+        s.condition,
+        s.additional_contact,
+        s.address,
+        s.telegram_username,
+        s.passport_id,
+        s.gender,
+        s.created_at,
+        s.zero_balance_updated_at,
+        s.company_id
+    FROM
+        students s
+    WHERE
+        s.zero_balance_updated_at IS NOT NULL
+        AND s.company_id = p_company_id
+        AND s.zero_balance_updated_at >= NOW() - INTERVAL '1 day' * p_days;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
 
 CREATE TABLE IF NOT EXISTS student_note
 (

@@ -1442,7 +1442,97 @@ func (r *StudentRepository) SendSmsBeforePaymentAlert() {
 }
 
 func (r *StudentRepository) SendSmsInsufficientBalanceAlert() {
+	fmt.Println("[SendSmsInsufficientBalanceAlert] Fetching active templates for INSUFFICIENT_BALANCE_ALERT")
 
+	rows, err := r.db.Query(`
+		SELECT company_id, id, texts, insufficient_balance_send_count
+		FROM sms_template 
+		WHERE action_type='INSUFFICIENT_BALANCE_ALERT' 
+		AND is_active=true 
+		AND sms_template_type='ACTION'
+	`)
+	if err != nil {
+		fmt.Println("[SendSmsInsufficientBalanceAlert] Error fetching templates:", err)
+		return
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var companyId, templateId int
+		var texts []string
+		var days int
+		var balance float64
+
+		if err := rows.Scan(&companyId, &templateId, pq.Array(&texts), &days); err != nil {
+			fmt.Println("[SendSmsInsufficientBalanceAlert] Failed to scan template row:", err)
+			continue
+		}
+
+		fmt.Printf("[SendSmsInsufficientBalanceAlert] Processing company_id: %d with interval: %d days\n", companyId, days)
+
+		query := `SELECT id, name, phone, zero_balance_updated_at , balance FROM get_students_with_zero_balance_within_interval($1, $2)`
+		students, err := r.db.Query(query, days, companyId, balance)
+		if err != nil {
+			fmt.Println("[SendSmsInsufficientBalanceAlert] Error executing student query:", err)
+			continue
+		}
+
+		for students.Next() {
+			var studentId, name, phone string
+			var zeroBalanceUpdatedAt time.Time
+
+			if err := students.Scan(&studentId, &name, &phone, &zeroBalanceUpdatedAt); err != nil {
+				fmt.Println("[SendSmsInsufficientBalanceAlert] Failed to scan student row:", err)
+				continue
+			}
+
+			tx, err := r.db.Begin()
+			if err != nil {
+				fmt.Println("[SendSmsInsufficientBalanceAlert] Failed to begin transaction:", err)
+				continue
+			}
+
+			var smsBalance int
+			err = tx.QueryRow(`SELECT sms_balance FROM company WHERE id=$1`, companyId).Scan(&smsBalance)
+			if err != nil || smsBalance < 1 {
+				fmt.Println("[SendSmsInsufficientBalanceAlert] Not enough SMS balance")
+				tx.Rollback()
+				continue
+			}
+
+			smsText, usedSmsCount := utils.GetSmsFormatted(strings.Join(texts, " "), "O'qituvchi", r.db, studentId, "", balance, fmt.Sprint(companyId))
+			if smsText == "" || usedSmsCount > smsBalance {
+				tx.Rollback()
+				continue
+			}
+
+			_, err = tx.Exec(`INSERT INTO sms_used(id, company_id, sms_template_id, texts, sms_count, student_id, sms_used_type, created_at, created_by_id, created_by_name) 
+				VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+				uuid.New(), companyId, templateId, pq.Array([]string{smsText}), usedSmsCount, studentId, "BY_TEMPLATE", time.Now(), "00000000-0000-0000-0000-000000000000", "system")
+			if err != nil {
+				tx.Rollback()
+				continue
+			}
+
+			_, err = tx.Exec(`UPDATE company SET sms_balance=sms_balance-$1 WHERE id=$2`, usedSmsCount, companyId)
+			if err != nil {
+				tx.Rollback()
+				continue
+			}
+
+			if err = utils.SendSMS(phone, smsText); err != nil {
+				tx.Rollback()
+				continue
+			}
+
+			if err := tx.Commit(); err != nil {
+				fmt.Println("[SendSmsInsufficientBalanceAlert] Failed to commit transaction:", err)
+			} else {
+				fmt.Printf("[SendSmsInsufficientBalanceAlert] Sent SMS to student %s from company %d\n", studentId, companyId)
+			}
+		}
+		students.Close()
+	}
 }
 
 func (r *StudentRepository) NotParticipateAlert() {
