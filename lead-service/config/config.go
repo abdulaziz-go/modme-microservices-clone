@@ -25,6 +25,7 @@ type Config struct {
 	Database DatabaseConfig `yaml:"database"`
 	Grpc     GrpcConfig     `yaml:"grpc"`
 }
+
 type GrpcConfig struct {
 	EducationService struct {
 		Address string `yaml:"address"`

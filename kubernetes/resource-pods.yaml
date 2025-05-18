@@ -1,0 +1,239 @@
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: education-postgres-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: finance-postgres-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: lead-postgres-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: user-postgres-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: education-postgres
+spec:
+  serviceName: "education-postgres"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+        name: education-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: EDUCATION_POSTGRES_DB
+                  name: postgres-configs
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: EDUCATION_POSTGRES_USER
+                  name: postgres-configs
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_PASSWORD
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: education-postgres-volume
+      volumes:
+        - name: education-postgres-volume
+          persistentVolumeClaim:
+            claimName: education-postgres-pvc
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: finance-postgres
+spec:
+  serviceName: "finance-postgres"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+        name: finance-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: FINANCE_POSTGRES_DB
+                  name: postgres-configs
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: FINANCE_POSTGRES_USER
+                  name: postgres-configs
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_PASSWORD
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: finance-postgres-storage
+      volumes:
+        - name: finance-postgres-storage
+          persistentVolumeClaim:
+            claimName: finance-postgres-pvc
+
+---
+
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: lead-postgres
+spec:
+  serviceName: "lead-postgres"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+        name: lead-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: LEAD_POSTGRES_DB
+                  name: postgres-configs
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: LEAD_POSTGRES_USER
+                  name: postgres-configs
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_PASSWORD
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: lead-postgres-storage
+      volumes:
+        - name: lead-postgres-storage
+          persistentVolumeClaim:
+            claimName: lead-postgres-pvc
+
+
+---
+
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: user-postgres
+spec:
+  serviceName: "user-postgres"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+        name: user-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: USER_POSTGRES_DB
+                  name: postgres-configs
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: USER_POSTGRES_USER
+                  name: postgres-configs
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_PASSWORD
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: user-postgres-storage
+      volumes:
+        - name: user-postgres-storage
+          persistentVolumeClaim:
+            claimName: user-postgres-pvc

@@ -2,16 +2,14 @@ server:
   port: 8080
 
 grpc:
-  auditing_service:
-    address: "localhost:50051"
   education_service:
-    address: "sphere-education-service:8080"
+    address: "education-service:80"
   lid_service:
-    address: "sphere-lead-service:8080"
+    address: "lead-service:80"
   user_service:
-    address: "sphere-user-service:8080"
+    address: "user-service:80"
   finance_service:
-    address: "sphere-finance-service:8080"
+    address: "finance-service:80"
 
 #server:
 #  port: 8080

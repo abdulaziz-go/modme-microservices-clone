@@ -2,7 +2,7 @@ server:
   port: 8080
 
 database:
-  host: "postgres-sphere-lead"
+  host: "lead-postgres"
   port: 5432
   user: "postgres"
   password: "password"
@@ -10,23 +10,8 @@ database:
   sslmode: "disable"
   action: "no"
 
-
 grpc:
   education_service:
-    address: "sphere-education-service:8080"
+    address: "education-service:80"
   user_service:
-    address: "sphere-user-service:8080"
-#server:
-#  port: 50053
-#
-#database:
-#  host: "localhost"
-#  port: 5432
-#  user: "postgres"
-#  password: "postgres"
-#  dbname: "modme_lead_db"
-#  sslmode: "disable"
-#  action: "no"
-#grpc:
-#  educationService:
-#    address: "localhost:50052"
+    address: "user-service:80"

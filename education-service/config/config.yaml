@@ -1,27 +1,8 @@
-#server:
-#  port: 50052
-#
-#database:
-#  host: "localhost"
-#  port: 5432
-#  user: "postgres"
-#  password: "postgres"
-#  dbname: "modme_education_db"
-#  sslmode: "disable"
-#  action: "no"
-#
-#
-#grpc:
-#  userService:
-#    address: "localhost:50055"
-#  financeService:
-#    address: "localhost:50056"
-
 server:
-  port: 8080
+  port: 80
 
 database:
-  host: "postgres-sphere-education"
+  host: "education-postgres"
   port: 5432
   user: "postgres"
   password: "password"
@@ -31,6 +12,8 @@ database:
 
 grpc:
   userService:
-    address: "sphere-user-service:8080"
+    address: "user-service:80"
   financeService:
-    address: "sphere-finance-service:8080"
+    address: "finance-service:80"
+  leadService:
+    address: "lead-service:80"
